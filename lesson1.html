@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python 程式編程：從零開始的對話</title>
+    <title>Python 程式編程：從零開始的對話 (完整版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
         
         body {
-            font-family: 'SF Pro Display', 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
+            font-family: 'SF Pro Display', 'Inter', sans-serif;
             background-color: #000;
             margin: 0;
             overflow: hidden;
+            color: #1d1d1f;
         }
 
         .slide-container {
             width: 100vw;
             height: 100vh;
             position: relative;
-            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -29,335 +29,270 @@
             width: 100%;
             height: 100%;
             position: absolute;
-            top: 0;
-            left: 0;
             display: none;
-            flex-direction: column;
+            padding: 40px;
             background-size: cover;
             background-position: center;
-            padding: 20px; /* 縮小外部邊距 */
-            color: #1d1d1f;
-            animation: fadeIn 0.6s ease-out;
+            animation: fadeIn 0.5s ease-out;
         }
 
-        .slide.active {
-            display: flex;
-        }
+        .slide.active { display: flex; flex-direction: column; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 優化後的內容容器 */
         .content-card {
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-            padding: clamp(20px, 4vw, 40px);
-            width: 95%;
-            max-width: 1000px;
-            max-height: 90vh; /* 提高最大高度 */
-            overflow-y: auto; /* 內容多時自動顯示滾動條 */
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: 60px;
+            width: 92%;
+            max-width: 1300px;
+            max-height: 88vh;
+            overflow-y: auto;
             margin: auto;
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
         }
 
-        /* 隱藏滾動條但保持功能 (可選) */
-        .content-card::-webkit-scrollbar {
-            width: 6px;
-        }
-        .content-card::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.1);
-            border-radius: 10px;
+        /* 強制 H1 為 48pt */
+        h1 { 
+            font-size: 48pt !important; 
+            font-weight: 800 !important; 
+            line-height: 1.2 !important; 
+            margin-bottom: 30px !important;
+            color: #000;
         }
 
+        /* 強制 H2 */
+        h2 { 
+            font-size: 38pt !important; 
+            font-weight: 700 !important; 
+            margin-bottom: 25px !important;
+            color: #000;
+        }
+
+        /* 強制內文最少 24pt */
+        p, li, span, h3 { 
+            font-size: 24pt !important; 
+            line-height: 1.5 !important; 
+        }
+        
         .code-block {
             background: #1e1e1e;
             color: #d4d4d4;
-            padding: 16px;
-            border-radius: 14px;
-            font-family: 'Fira Code', 'Courier New', monospace;
-            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-            margin: 12px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .title-main {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            letter-spacing: -1.2px;
-            line-height: 1.15;
-            margin-bottom: 12px;
-        }
-
-        .slide-nav {
-            position: fixed;
-            bottom: 20px;
-            right: 25px;
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            color: #1d1d1f;
-            padding: 10px 20px;
-            border-radius: 100px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px);
+            padding: 30px;
+            border-radius: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 30pt !important;
+            margin: 25px 0;
+            white-space: pre-wrap;
+            line-height: 1.3 !important;
         }
 
         .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 100px;
+            font-size: 18pt !important;
+            padding: 8px 24px;
             background: #007aff;
             color: white;
-            font-size: 0.75rem;
+            border-radius: 100px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            display: inline-block;
         }
 
-        .flex-layout {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            justify-content: center;
-            flex-wrap: wrap;
+        /* 導航按鈕：更小且不干擾 */
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px !important; 
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.2s;
         }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.5); color: #000; }
+        .slide-nav { position: fixed; bottom: 15px; right: 15px; display: flex; gap: 6px; }
 
-        .feature-item {
-            background: rgba(255, 255, 255, 0.45);
-            border-radius: 18px;
-            padding: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            flex: 1;
-            min-width: 220px;
+        ul { list-style-type: disc; margin-left: 50px; }
+        ol { list-style-type: decimal; margin-left: 50px; }
+        
+        .feature-item { 
+            padding: 25px; 
+            background: rgba(255, 255, 255, 0.5); 
+            border-radius: 20px; 
+            margin-bottom: 15px; 
+            border: 1px solid rgba(255,255,255,0.5);
         }
     </style>
 </head>
 <body>
 
 <div class="slide-container" id="container">
-    <!-- Slide 1: 標題頁 -->
+    <!-- Slide 1 -->
     <div class="slide active" id="slide-1">
         <div class="content-card text-center">
-            
-            <h1 class="title-main">Python 程式編程：<br>從零開始的對話</h1>
-            <p class="text-xl text-gray-600 mb-6">第一堂：你好，Python！</p>
-            <div class="pt-6 border-t border-gray-200">
-                <p class="text-md font-medium">導師：[您的名字] | 中三級電腦科</p>
+            <h1>Python 程式編程：<br>從零開始的對話</h1>
+            <p style="color: #667eea; font-weight: bold;">第一堂：你好，Python！</p>
+            <div class="mt-10 pt-6 border-t border-gray-200">
+                <p>導師：[您的名字] | 中三級電腦科</p>
             </div>
         </div>
     </div>
 
-    <!-- Slide 2: 為什麼學 Python -->
+    <!-- Slide 2 -->
     <div class="slide" id="slide-2">
         <div class="content-card">
             <div class="badge">WHY PYTHON?</div>
-            <h2 class="text-3xl font-bold mb-6">為什麼要學 Python？</h2>
-            <div class="flex-layout">
-                <div class="feature-item">
-                    <h3 class="text-xl font-bold mb-2">🌟 簡單易學</h3>
-                    <p class="text-sm text-gray-700">語法像英文，專注於邏輯而非複雜符號。適合初學者建立信心。</p>
-                </div>
-                <div class="feature-item">
-                    <h3 class="text-xl font-bold mb-2">🤖 AI 核心</h3>
-                    <p class="text-sm text-gray-700">ChatGPT, 數據分析, 機器人，全世界最尖端的科技都在用。</p>
-                </div>
-                <div class="feature-item">
-                    <h3 class="text-xl font-bold mb-2">🚀 自動化</h3>
-                    <p class="text-sm text-gray-700">幫你處理繁瑣的電腦工作，節省時間去做更有創意的事情。</p>
-                </div>
+            <h2>為什麼要學 Python？</h2>
+            <div class="feature-item">
+                <p>🌟 <b>簡單易學：</b>語法像英文，專注於邏輯而非複雜符號。適合初學者建立信心。</p>
             </div>
-            <div class="mt-8 text-center">
-                
+            <div class="feature-item">
+                <p>🤖 <b>AI 核心：</b>ChatGPT, 數據分析, 機器人，全世界最尖端的科技都在用。</p>
+            </div>
+            <div class="feature-item">
+                <p>🚀 <b>自動化：</b>幫你處理繁瑣的電腦工作，節省時間去做更有創意的事情。</p>
             </div>
         </div>
     </div>
 
-    <!-- Slide 3: 進入編程環境 -->
+    <!-- Slide 3 -->
     <div class="slide" id="slide-3">
         <div class="content-card">
             <div class="badge">SETUP</div>
-            <h2 class="text-3xl font-bold mb-4">進入編程環境</h2>
-            <div class="space-y-4">
-                <div class="p-5 bg-white/50 rounded-2xl border border-white">
-                    <h3 class="text-lg font-bold mb-1">🛠️ Google Colab / Thonny</h3>
-                    <p class="text-sm">這是你的「數位畫布」，在這裡寫下的指令，電腦會立刻幫你實現。</p>
-                </div>
-                <div class="p-5 bg-yellow-400/20 rounded-2xl border border-yellow-400/40">
-                    <h3 class="text-lg font-bold mb-1">⚠️ 第一條規則</h3>
-                    <p class="text-sm">電腦很聽話，但很死板。打錯一個括號或引號，它就完全看不懂。**細心是第一要務！**</p>
-                </div>
-                <div class="code-block">print("Hello World!")</div>
+            <h2>進入編程環境</h2>
+            <div class="feature-item">
+                <h3>🛠️ Google Colab / Thonny</h3>
+                <p>這是你的「數位畫布」，在這裡寫下的指令，電腦會立刻幫你實現。</p>
             </div>
+            <div style="background: rgba(252, 211, 77, 0.2); padding: 20px; border-radius: 20px;">
+                <p>⚠️ <b>第一條規則：</b>電腦很死板。打錯一個括號或引號，它就看不懂。細心是第一要務！</p>
+            </div>
+            <div class="code-block">print("Hello World!")</div>
         </div>
     </div>
 
-    <!-- Slide 4: print() -->
+    <!-- Slide 4 -->
     <div class="slide" id="slide-4">
         <div class="content-card">
             <div class="badge">PYTHON BASICS</div>
-            <h2 class="text-3xl font-bold mb-4">讓電腦「說話」：print()</h2>
-            <div class="flex-layout">
-                <div class="flex-1 min-w-[300px]">
-                    <p class="text-lg mb-2">使用 `print()` 函數來輸出訊息。</p>
-                    <div class="code-block">print("你想顯示的內容")</div>
-                    <div class="mt-4 p-4 bg-blue-500/10 rounded-xl text-blue-800 border border-blue-200">
-                        <p class="font-bold text-sm">🎯 任務：</p>
-                        <ul class="list-disc ml-5 text-sm">
-                            <li>印出你的英文名</li>
-                            <li>印出計算結果：print(10 * 10)</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="flex-1 flex justify-center">
-                    
-                </div>
+            <h2>讓電腦「說話」：print()</h2>
+            <p>使用 `print()` 函數來輸出訊息。</p>
+            <div class="code-block">print("你想顯示的內容")</div>
+            <div style="background: #e0f2fe; padding: 20px; border-radius: 20px; border: 1px solid #bae6fd;">
+                <p style="color: #0369a1; font-weight: bold;">🎯 任務：</p>
+                <ul>
+                    <li>印出你的英文名</li>
+                    <li>印出計算結果：print(10 * 10)</li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <!-- Slide 5: Variables -->
+    <!-- Slide 5 -->
     <div class="slide" id="slide-5">
         <div class="content-card text-center">
             <div class="badge">MEMORY</div>
-            <h2 class="text-3xl font-bold mb-4">電腦的記憶：變數</h2>
-            <div class="flex justify-center mb-4">
-                
-            </div>
-            <p class="text-lg mb-4 text-gray-700">變數就像「標籤盒子」。我們先命名，再存入資料。</p>
+            <h2>電腦的記憶：變數</h2>
+            <p>變數就像「標籤盒子」。我們先命名，再存入資料。</p>
             <div class="code-block text-left inline-block">
-                name = "Python Cat"<br>
-                score = 100
+name = "Python Cat"<br>
+score = 100
             </div>
+            <p>這代表我們在名為 name 的盒子裡放了一段文字。</p>
         </div>
     </div>
 
-    <!-- Slide 6: input() -->
+    <!-- Slide 6 -->
     <div class="slide" id="slide-6">
         <div class="content-card">
             <div class="badge">INTERACTION</div>
-            <h2 class="text-3xl font-bold mb-4">讓電腦聽話：input()</h2>
-            <div class="flex-layout">
-                <div class="flex-1 min-w-[300px]">
-                    <p class="text-lg mb-2">`input()` 會讓程式暫停，等待你輸入內容。</p>
-                    <div class="code-block">
-                        name = input("你叫咩名？")<br>
-                        print("Hello " + name)
-                    </div>
-                </div>
-                <div class="flex-1 bg-white/40 p-4 rounded-xl border border-white">
-                    <p class="text-sm font-bold text-blue-600 mb-2">💡 互動邏輯</p>
-                    <p class="text-xs text-gray-600">這是你與電腦之間真正的「對話」。電腦會記住你的輸入，並在之後使用它。</p>
-                </div>
+            <h2>讓電腦聽話：input()</h2>
+            <p>`input()` 會讓程式暫停，等待你輸入內容：</p>
+            <div class="code-block">
+name = input("你叫咩名？")<br>
+print("Hello " + name)
+            </div>
+            <div class="feature-item">
+                <p>💡 這是你與電腦之間真正的「對話」。電腦會記住你的輸入，並在之後使用它。</p>
             </div>
         </div>
     </div>
 
-    <!-- Slide 7: 實作練習 -->
+    <!-- Slide 7 -->
     <div class="slide" id="slide-7">
         <div class="content-card text-center">
             <div class="badge">ART</div>
-            <h2 class="text-3xl font-bold mb-4">實作：ASCII 字符藝術</h2>
-            <p class="text-sm text-gray-600 mb-4">嘗試用多個 `print()` 畫出一隻貓：</p>
+            <h2>實作：ASCII 字符藝術</h2>
+            <p>嘗試用多個 `print()` 畫出一隻貓：</p>
             <div class="code-block text-left inline-block">
-                print("  /\_/\  ")<br>
-                print(" ( o.o ) ")<br>
-                print("  > ^ <  ")
+print("  /\_/\  ")<br>
+print(" ( o.o ) ")<br>
+print("  > ^ <  ")
             </div>
-            <div class="mt-6 text-xs italic text-gray-500">
-                提示：空格的數量會決定圖案是否對齊！
-            </div>
+            <p style="font-size: 18pt !important; font-style: italic;">提示：空格的數量會決定圖案是否對齊！</p>
         </div>
     </div>
 
-    <!-- Slide 8: 綜合挑戰 -->
+    <!-- Slide 8 -->
     <div class="slide" id="slide-8">
         <div class="content-card">
             <div class="badge">MISSION</div>
-            <h2 class="text-3xl font-bold mb-6">今日挑戰：個人檔案卡</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="feature-item border-l-4 border-blue-500">
-                    <h3 class="font-bold mb-2 text-md">任務清單</h3>
-                    <ul class="space-y-2 text-xs">
-                        <li>✅ 用 input 詢問 3 個問題（名、校、愛好）</li>
-                        <li>✅ 用 3 個變數分別存起來</li>
-                        <li>✅ 最後印出一個整齊的檔案卡</li>
+            <h2>今日挑戰：個人檔案卡</h2>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="feature-item">
+                    <h3 style="font-weight: bold;">任務清單</h3>
+                    <ul style="font-size: 20pt !important;">
+                        <li>✅ 詢問名、校、愛好</li>
+                        <li>✅ 用 3 個變數存起來</li>
+                        <li>✅ 印出整齊的檔案卡</li>
                     </ul>
                 </div>
-                <div class="feature-item bg-blue-600 text-white border-none">
-                    <h3 class="font-bold mb-2 text-md">預期效果</h3>
-                    <p class="text-[10px] font-mono leading-tight">
-                        ********** PROFILE **********<br>
-                        NAME: Peter<br>
-                        SCHOOL: CS Secondary School<br>
-                        *****************************
-                    </p>
+                <div style="background: #1e293b; color: white; padding: 25px; border-radius: 20px; font-family: monospace;">
+                    <p style="font-size: 18pt !important;">*** PROFILE ***<br>NAME: Peter<br>SCHOOL: CS Sec<br>*************</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Slide 9: 常犯錯誤 -->
+    <!-- Slide 9 -->
     <div class="slide" id="slide-9">
         <div class="content-card">
-            <div class="badge bg-red-500 text-white">DEBUG</div>
-            <h2 class="text-3xl font-bold mb-6">為什麼程式出錯了？</h2>
-            <div class="space-y-3">
-                <div class="flex items-center gap-3 p-3 bg-red-100/50 rounded-xl border border-red-200">
-                    <span class="text-xl">❌</span>
-                    <p class="text-sm">**漏了括號：** `print "Hi"` → 應該是 `print("Hi")`</p>
+            <div class="badge" style="background: #ef4444;">DEBUG</div>
+            <h2>為什麼程式出錯了？</h2>
+            <div class="space-y-4">
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>漏了括號：</b>`print "Hi"` → 應為 `print("Hi")`</p>
                 </div>
-                <div class="flex items-center gap-3 p-3 bg-red-100/50 rounded-xl border border-red-200">
-                    <span class="text-xl">❌</span>
-                    <p class="text-sm">**引號打架：** `"Hello'` → 引號必須成對 `""` 或 `''`</p>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>引號打架：</b>`"Hello'` → 必須成對 `""` 或 `''`</p>
                 </div>
-                <div class="flex items-center gap-3 p-3 bg-red-100/50 rounded-xl border border-red-200">
-                    <span class="text-xl">❌</span>
-                    <p class="text-sm">**全形標點：** 電腦看不懂 `（ ）`，必須用 `( )`</p>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>全形標點：</b>電腦看不懂 `（ ）`，必須用 `( )`</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Slide 10: 總結 -->
+    <!-- Slide 10 -->
     <div class="slide" id="slide-10">
         <div class="content-card text-center">
             <div class="badge">CONGRATS!</div>
-            <h2 class="text-3xl font-bold mb-4">本堂總結</h2>
-            <p class="text-lg text-gray-600 mb-8">你已經成功開啟了編程世界的大門！</p>
-            <div class="bg-blue-600 p-6 rounded-3xl text-white shadow-xl">
-                <h3 class="text-xl font-bold mb-1">下堂預告</h3>
-                <p class="text-sm opacity-90">處理數字與計算：</p>
-                <p class="text-2xl font-bold mt-2">BMI 健康計算機</p>
+            <h2>本堂總結</h2>
+            <p>你已經成功開啟了編程世界的大門！</p>
+            <div style="background: #2563eb; color: white; padding: 40px; border-radius: 30px; margin-top: 30px;">
+                <h3 style="font-size: 28pt !important;">下堂預告：BMI 健康計算機</h3>
             </div>
-            <p class="mt-6 text-xs text-gray-400 italic">記住：多練習，代碼就不會難！</p>
+            <p style="margin-top: 30px; font-style: italic; color: #94a3b8;">記住：多練習，代碼就不會難！</p>
         </div>
     </div>
 </div>
 
 <div class="slide-nav">
-    <button class="nav-btn" onclick="prevSlide()">← PREV</button>
-    <button class="nav-btn" onclick="nextSlide()">NEXT →</button>
+    <button class="nav-btn" onclick="prevSlide()">PREV</button>
+    <button class="nav-btn" onclick="nextSlide()">NEXT</button>
 </div>
 
 <script>
@@ -371,22 +306,16 @@
         currentSlide = n;
     }
 
-    function nextSlide() {
-        if (currentSlide < totalSlides) showSlide(currentSlide + 1);
-    }
-
-    function prevSlide() {
-        if (currentSlide > 1) showSlide(currentSlide - 1);
-    }
+    function nextSlide() { if (currentSlide < totalSlides) showSlide(currentSlide + 1); }
+    function prevSlide() { if (currentSlide > 1) showSlide(currentSlide - 1); }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
         if (e.key === 'ArrowLeft') prevSlide();
     });
 
-    const slides = document.querySelectorAll('.slide');
     const bgGradients = [
-        'linear-gradient(135deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%)',
+        'linear-gradient(135deg, #FF9A8B 0%, #FF6A88 100%)',
         'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
         'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
         'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)',
@@ -398,7 +327,7 @@
         'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
     ];
 
-    slides.forEach((slide, index) => {
+    document.querySelectorAll('.slide').forEach((slide, index) => {
         slide.style.backgroundImage = bgGradients[index % bgGradients.length];
     });
 </script>
