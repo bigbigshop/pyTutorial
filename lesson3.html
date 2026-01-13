@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 程式編程：數學魔法 (完整版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="function.js" defer></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="slide-container" id="container">
+    <!-- Slide 1 -->
+    <div class="slide active" id="slide-1">
+        <div class="content-card text-center">
+            <h1>Python 邏輯魔法：<br>True or False?</h1>
+            <p style="color: #ff3b30; font-weight: bold;">第三堂：密碼檢查器與 BMI 判定挑戰</p>
+            <div class="mt-10 pt-6 border-t border-gray-200">
+                <p>中三級電腦科 | 讓電腦學會分辨是非</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" id="slide-2">
+        <div class="content-card">
+            <div class="badge">OBJECTIVE</div>
+            <h2>今日目標</h2>
+            <p>賦予程式「大腦」，讓它學會做決定：</p>
+            <div class="space-y-4">
+                <div class="feature-item"><p>✅ <b>判斷：</b> 學習 `if` 與 `else` 的語法</p></div>
+                <div class="feature-item"><p>✅ <b>應用：</b> 實作「密碼檢查系統」</p></div>
+                <div class="feature-item"><p>✅ <b>挑戰：</b> 升級 BMI 計算機 (自動判定健康狀況)</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" id="slide-3">
+        <div class="content-card">
+            <div class="badge">LOGIC</div>
+            <h2>電腦的是非題</h2>
+            <p>在程式中，邏輯判斷只有兩個答案：</p>
+            <div class="grid-box">
+                <div class="feature-item" style="border-top: 8px solid #34c759;">
+                    <p>🟢 <b>True (真)：</b><br>條件成立，例如 10 > 5</p>
+                </div>
+                <div class="feature-item" style="border-top: 8px solid #ff3b30;">
+                    <p>🔴 <b>False (假)：</b><br>條件不成立，例如 1 == 2</p>
+                </div>
+            </div>
+            <p class="mt-4">這就是所謂的「布林值 (Boolean)」。</p>
+        </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide" id="slide-4">
+        <div class="content-card">
+            <div class="badge">IF STATEMENT</div>
+            <h2>If 語法：程式的抉擇</h2>
+            <p>這是引導程式走不同路徑的方式：</p>
+            <div class="code-block">
+if 條件:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;如果 True 就執行這裡<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;如果 False 就執行這裡
+            </div>
+            <p>🛑 <b>重點：</b> 冒號 `:` 之後必須<b>縮排 (Indent)</b>！</p>
+        </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide" id="slide-5">
+        <div class="content-card">
+            <div class="badge">PRACTICE</div>
+            <h2>實作 1：密碼檢查器</h2>
+            <p>設定正確密碼為 "school123"：</p>
+            <div class="code-block">
+pw = input("請輸入密碼: ")<br><br>
+if pw == "school123":<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("歡迎進來，校長！")<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("密碼錯誤，請重試。")
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide" id="slide-6">
+        <div class="content-card">
+            <div class="badge">COMPARISON</div>
+            <h2>注意：= 還是 == ?</h2>
+            <div class="grid-box">
+                <div class="feature-item">
+                    <p><b>一個等號 `=`</b></p>
+                    <p style="font-size: 18pt !important;">賦值 (把資料放入盒子)<br>例：`x = 10`</p>
+                </div>
+                <div class="feature-item">
+                    <p><b>兩個等號 `==`</b></p>
+                    <p style="font-size: 18pt !important;">檢查是否相等 (問問題)<br>例：`x == 10 ?`</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide" id="slide-7">
+        <div class="content-card">
+            <div class="badge">BMI STANDARDS</div>
+            <h2>挑戰題背景：BMI 標準</h2>
+            <p>要讓 BMI 計算機變聰明，我們需要這些數值：</p>
+            <table>
+                <thead>
+                    <tr><th>BMI 數值</th><th>健康狀況</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>&lt; 18.5</td><td style="color: #007aff;">過輕 (Underweight)</td></tr>
+                    <tr><td>18.5 - 24.9</td><td style="color: #34c759;">正常 (Healthy)</td></tr>
+                    <tr><td>&gt; 25</td><td style="color: #ff3b30;">過重 (Overweight)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide" id="slide-8">
+        <div class="content-card">
+            <div class="badge">ELIF</div>
+            <h2>新武器：elif (多重判斷)</h2>
+            <p>當你有超過兩個以上的選擇時使用：</p>
+            <div class="code-block">
+if bmi < 18.5:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("過輕")<br>
+elif bmi < 25:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("正常")<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("過重")
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide" id="slide-9">
+        <div class="content-card">
+            <div class="badge">ULTIMATE CHALLENGE</div>
+            <h2>終極挑戰：BMI 2.0 智慧型</h2>
+            <p>請結合第二堂的計算公式與今日的邏輯：</p>
+            <div class="feature-item" style="background: #fff;">
+                <ol class="space-y-4">
+                    <li>1. 詢問使用者身高及體重並計算 BMI。</li>
+                    <li>2. 程式需判定並顯示「過輕」、「正常」或「過重」。</li>
+                    <li>3. <b>加分題：</b> 使用 `round()` 將 BMI 四捨五入至小數後一位。</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide" id="slide-10">
+        <div class="content-card text-center">
+            <div class="badge" style="background: #34c759;">SUCCESS</div>
+            <h2>本堂總結</h2>
+            <p>你已經從「計算員」進化成「決策者」了！</p>
+            <div style="background: #5856d6; color: white; padding: 40px; border-radius: 30px; margin-top: 30px;">
+                <h3 style="font-size: 28pt !important;">下堂預告：循環魔法 (Loop)</h3>
+                <p>如果我們要一次處理 100 個人的數據？<br>教你如何用 3 行代碼完成重複工作！</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-nav">
+    <button class="nav-btn" onclick="prevSlide()">PREV</button>
+    <button class="nav-btn" onclick="nextSlide()">NEXT</button>
+</div>
+
+</body>
+</html>

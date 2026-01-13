@@ -148,3 +148,9 @@ ol { list-style-type: decimal; margin-left: 50px; }
 }
 
 .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+table { width: 100%; border-collapse: separate; border-spacing: 0 10px; margin-top: 20px; }
+        th { font-size: 20pt !important; color: #666; text-align: left; padding: 10px 20px; }
+        td { font-size: 24pt !important; padding: 20px; background: white; border-radius: 0; }
+        td:first-child { border-radius: 20px 0 0 20px; font-weight: bold; }
+        td:last-child { border-radius: 0 20px 20px 0; }
