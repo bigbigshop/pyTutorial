@@ -1,0 +1,150 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&display=swap');
+
+body {
+    font-family: 'SF Pro Display', 'Inter', sans-serif;
+    background-color: #000;
+    margin: 0;
+    overflow: hidden;
+    color: #1d1d1f;
+}
+
+.slide-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: none;
+    padding: 40px;
+    background-size: cover;
+    background-position: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.slide.active { display: flex; flex-direction: column; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.content-card {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(30px);
+    border-radius: 40px;
+    padding: 60px;
+    width: 92%;
+    max-width: 1300px;
+    max-height: 88vh;
+    overflow-y: auto;
+    margin: auto;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+}
+
+/* 強制字體大小設定 */
+h1 { 
+    font-size: 48pt !important; 
+    font-weight: 800 !important; 
+    line-height: 1.2 !important; 
+    margin-bottom: 30px !important;
+    color: #000;
+}
+
+h2 { 
+    font-size: 38pt !important; 
+    font-weight: 700 !important; 
+    margin-bottom: 25px !important;
+    color: #000;
+}
+
+p, li, span, h3, b { 
+    font-size: 24pt !important; 
+    line-height: 1.5 !important; 
+}
+
+/* 代碼塊容器 */
+.code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px 0; /* 上下 padding，左右交給行處理 */
+    border-radius: 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 30pt !important;
+    margin: 25px 0;
+    line-height: 1.3 !important;
+    overflow: hidden; /* 確保圓角 */
+}
+
+/* 新增：代碼行樣式 */
+.line-row {
+    display: flex;
+    padding: 0 20px;
+}
+
+.line-row:hover {
+    background: rgba(255,255,255,0.05); /* 滑鼠懸停高亮 */
+}
+
+.line-num {
+    color: #555;
+    margin-right: 20px;
+    user-select: none; /* 防止複製行號 */
+    -webkit-user-select: none;
+    min-width: 50px;
+    text-align: right;
+    border-right: 2px solid #444;
+    padding-right: 15px;
+    font-family: 'Fira Code', monospace;
+}
+
+.line-code {
+    flex: 1;
+    white-space: pre-wrap; /* 保留空格 */
+    font-family: 'Fira Code', monospace;
+}
+
+.badge {
+    font-size: 18pt !important;
+    padding: 8px 24px;
+    background: #007aff;
+    color: white;
+    border-radius: 100px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+/* 導航按鈕 */
+.nav-btn {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px !important; 
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: all 0.2s;
+}
+.nav-btn:hover { background: rgba(255, 255, 255, 0.5); color: #000; }
+.slide-nav { position: fixed; bottom: 15px; right: 15px; display: flex; gap: 6px; }
+
+ul { list-style-type: disc; margin-left: 50px; }
+ol { list-style-type: decimal; margin-left: 50px; }
+
+.feature-item { 
+    padding: 25px; 
+    background: rgba(255, 255, 255, 0.5); 
+    border-radius: 20px; 
+    margin-bottom: 15px; 
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+.grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
