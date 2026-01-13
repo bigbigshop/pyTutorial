@@ -122,19 +122,20 @@ p, li, span, h3, b {
 
 /* 導航按鈕 */
 .nav-btn {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(3x);
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 12px !important; 
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(0, 0, 0, 0.9);
     cursor: pointer;
     border: 1px solid rgba(255,255,255,0.3);
     transition: all 0.2s;
 }
 .nav-btn:hover { background: rgba(255, 255, 255, 0.5); color: #000; }
 .slide-nav { position: fixed; bottom: 15px; right: 15px; display: flex; gap: 6px; }
+.nav-left { position: fixed; bottom: 15px; left: 15px; }
 
 ul { list-style-type: disc; margin-left: 50px; }
 ol { list-style-type: decimal; margin-left: 50px; }
