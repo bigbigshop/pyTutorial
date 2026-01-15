@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grader Pro (AI Edition + OCR)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- 引入 Tesseract.js 用於 OCR 文字辨識 -->
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <style>
+        /* Apple 風格美學 */
+        :root {
+            --apple-bg: #F5F5F7;
+            --apple-card: rgba(255, 255, 255, 0.85);
+            --apple-text: #1D1D1F;
+            --apple-blue: #0071E3;
+            --apple-green: #34C759;
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            background-color: var(--apple-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro TC", "Microsoft JhengHei", Roboto, sans-serif;
+            color: var(--apple-text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-panel {
+            background: var(--apple-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-card);
+        }
+
+        .glass-input {
+            background: rgba(118, 118, 128, 0.05);
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .glass-input:focus {
+            background: #FFFFFF;
+            border-color: var(--apple-blue);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+        }
+
+        /* 滑桿樣式 */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 22px;
+            width: 22px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            margin-top: -9px;
+            border: 0.5px solid rgba(0,0,0,0.04);
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #E5E5EA;
+            border-radius: 2px;
+        }
+        
+        .fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden-section { display: none !important; }
+        .clickable-zone { cursor: pointer; }
+
+        /* Loading 動畫 */
+        .loader {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col">
+
+    <!-- 導覽列 -->
+    <nav class="h-14 flex-none glass-panel z-50 flex items-center justify-between px-6 border-b border-gray-200/50">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center text-sm">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+            <span class="font-semibold text-lg tracking-tight">Grader Pro <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full ml-1">OCR+AI</span></span>
+        </div>
+        <div class="flex gap-4 items-center">
+            <button onclick="toggleSettings()" class="text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors flex items-center gap-1">
+                <i class="fa-solid fa-gear"></i> 設定
+            </button>
+            <div class="h-4 w-[1px] bg-gray-300"></div>
+            <button onclick="resetApp()" class="text-sm font-medium text-gray-500 hover:text-red-500 transition-colors">重置</button>
+            <button onclick="exportReport()" class="text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors">匯出報告</button>
+        </div>
+    </nav>
+
+    <!-- 設定視窗 (Modal) -->
+    <div id="settings-modal" class="fixed inset-0 z-[60] bg-black/20 backdrop-blur-sm hidden flex items-center justify-center fade-in">
+        <div class="bg-white rounded-2xl p-6 w-[450px] shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg">AI 參數設定</h3>
+                <button onclick="toggleSettings()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-5">
+                <!-- 供應商快速切換 -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">快速選擇供應商 (Provider)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="setProvider('openai')" class="border border-gray-200 rounded-lg p-2 text-sm hover:border-blue-500 hover:text-blue-600 transition-colors text-left flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> OpenAI (Vision)
+                        </button>
+                        <button onclick="setProvider('chatanywhere')" class="border border-gray-200 rounded-lg p-2 text-sm hover:border-blue-500 hover:text-blue-600 transition-colors text-left flex items-center gap-2 bg-blue-50/50">
+                            <i class="fa-solid fa-network-wired"></i> ChatAnywhere
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">API URL (Endpoint)</label>
+                    <input type="text" id="api-url-input" class="glass-input w-full p-2 rounded-lg text-sm font-mono text-gray-600" placeholder="https://api.openai.com/v1/chat/completions" onchange="saveSettings()">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">API Key</label>
+                    <input type="password" id="api-key-input" class="glass-input w-full p-2 rounded-lg text-sm font-mono" placeholder="sk-..." onchange="saveSettings()">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Model Name</label>
+                    <input type="text" id="api-model-input" class="glass-input w-full p-2 rounded-lg text-sm font-mono text-gray-600" placeholder="gpt-4o" onchange="saveSettings()">
+                    <p class="text-[10px] text-gray-400 mt-1">ChatAnywhere 自動切換為 <strong>gpt-3.5-turbo</strong> 並啟用 OCR。</p>
+                </div>
+                
+                <p class="text-xs text-gray-400 pt-2 border-t border-gray-100">
+                    設定僅儲存於本地瀏覽器。
+                </p>
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <button onclick="toggleSettings()" class="bg-black text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">完成</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要內容區 -->
+    <main class="flex-1 flex overflow-hidden relative">
+        
+        <!-- 上傳區域 (初始畫面) -->
+        <div id="upload-zone" class="absolute inset-0 z-40 flex items-center justify-center p-8 fade-in bg-[#F5F5F7]">
+            
+            <!-- 模式 1: 檔案上傳 -->
+            <div class="glass-panel p-12 rounded-[2rem] text-center max-w-lg w-full transition-all duration-300 hover:scale-[1.01]" id="drop-area-container">
+                <div id="drop-area" class="clickable-zone"
+                     onclick="document.getElementById('file-input').click()"
+                     ondragover="handleDragOver(event)" 
+                     ondrop="handleDrop(event)">
+                    <div class="w-20 h-20 bg-blue-50 text-[#0071E3] rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-3 tracking-tight">上傳學生作業</h2>
+                    <p class="text-gray-500 mb-6 leading-relaxed font-medium">支援 JPG, PNG 圖片或 PDF 文件。</p>
+                    <input type="file" id="file-input" class="hidden" accept="image/*,.pdf" onchange="handleFileSelect(event)">
+                    <button class="bg-[#0071E3] text-white px-8 py-3 rounded-full font-medium pointer-events-none shadow-lg shadow-blue-500/20">選擇檔案</button>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-200/50">
+                    <button onclick="switchToTextMode()" class="text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors flex items-center justify-center gap-2 w-full">
+                        <i class="fa-solid fa-font"></i> 或者：切換至文字輸入模式
+                    </button>
+                </div>
+            </div>
+
+            <!-- 模式 2: 純文字輸入 -->
+            <div id="text-input-zone" class="glass-panel p-8 rounded-[2rem] max-w-2xl w-full hidden-section relative flex flex-col h-[500px]">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold tracking-tight"><i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i>輸入學生作文</h2>
+                    <button onclick="switchToFileMode()" class="text-sm text-gray-400 hover:text-gray-600">
+                        <i class="fa-solid fa-xmark"></i> 取消
+                    </button>
+                </div>
+                <textarea id="direct-text-input" class="flex-1 w-full bg-white/50 border border-gray-200 rounded-xl p-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none font-sans text-base leading-relaxed" placeholder="請在此貼上或輸入學生的作文內容..."></textarea>
+                <div class="mt-4 flex justify-end">
+                    <button onclick="handleTextSubmit()" class="bg-[#0071E3] text-white px-8 py-3 rounded-full font-medium hover:bg-[#0077ED] shadow-lg shadow-blue-500/20 transition-all">
+                        確認並開始評分
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 工作區 -->
+        <div id="workspace" class="w-full h-full flex hidden-section opacity-0 transition-opacity duration-500">
+            
+            <!-- 左側：學生作業預覽 -->
+            <div class="w-1/2 h-full p-4 flex flex-col border-r border-gray-200">
+                <div class="flex justify-between items-center mb-3 px-2">
+                    <h3 class="font-semibold text-gray-500 text-xs uppercase tracking-wider">學生繳交作業</h3>
+                    <div id="viewer-controls" class="flex gap-2">
+                        <button onclick="zoomViewer(-0.1)" class="w-7 h-7 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-gray-600"><i class="fa-solid fa-minus text-xs"></i></button>
+                        <button onclick="zoomViewer(0.1)" class="w-7 h-7 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-gray-600"><i class="fa-solid fa-plus text-xs"></i></button>
+                    </div>
+                </div>
+                <div class="flex-1 bg-[#EAEAEA] rounded-2xl overflow-hidden relative shadow-inner flex items-center justify-center group">
+                    <div id="viewer-container" class="w-full h-full overflow-auto flex items-center justify-center p-8">
+                        <!-- 圖片預覽 -->
+                        <img id="image-preview" class="max-w-full max-h-full object-contain shadow-2xl transition-transform duration-200 hidden rounded-lg" alt="Student Work">
+                        <!-- PDF 預覽 -->
+                        <iframe id="pdf-preview" class="w-full h-full hidden rounded-lg shadow-sm" frameborder="0"></iframe>
+                        <!-- 純文字預覽 -->
+                        <div id="text-preview" class="hidden w-full h-full bg-white p-8 rounded-lg shadow-sm overflow-y-auto text-left">
+                            <pre class="whitespace-pre-wrap font-sans text-gray-800 leading-7 text-lg" id="text-preview-content"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側：評分與設定面板 -->
+            <div class="w-1/2 h-full overflow-y-auto bg-white custom-scrollbar">
+                <div class="p-8 max-w-2xl mx-auto space-y-8 pb-20">
+                    
+                    <!-- AI 控制台 & 題目設定 -->
+                    <section class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-5 border border-indigo-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-indigo-900 flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-indigo-500"></i> AI 智能評分
+                            </h3>
+                            <button id="ai-btn" onclick="runAIGrading()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span id="ai-btn-text">開始評分</span>
+                                <div id="ai-loader" class="loader hidden"></div>
+                            </button>
+                        </div>
+
+                        <!-- 題目上傳/輸入 -->
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-bold text-gray-500 uppercase">評分依據 / 題目要求</label>
+                                <label for="question-file-input" class="text-xs text-indigo-600 cursor-pointer hover:underline flex items-center gap-1 font-medium">
+                                    <i class="fa-solid fa-image"></i> 上傳題目圖片
+                                </label>
+                                <input type="file" id="question-file-input" class="hidden" accept="image/*" onchange="handleQuestionUpload(event)">
+                            </div>
+                            
+                            <!-- 題目圖片預覽 -->
+                            <div id="question-image-preview-container" class="hidden relative w-full h-32 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 group">
+                                <img id="question-image-preview" class="w-full h-full object-contain" />
+                                <button onclick="removeQuestionImage()" class="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+
+                            <textarea id="requirements" rows="3" class="glass-input w-full rounded-xl p-3 text-sm text-gray-600 bg-white" placeholder="或在此直接輸入題目要求、評分重點..."></textarea>
+                            
+                            <!-- OCR 結果顯示 (隱藏式，除錯用或讓用戶看) -->
+                            <div id="ocr-result-box" class="hidden">
+                                <label class="text-xs font-bold text-gray-400 uppercase">OCR 辨識結果 (AI 將讀取此文字)</label>
+                                <textarea id="ocr-text-display" rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs text-gray-500 font-mono mt-1" readonly></textarea>
+                            </div>
+                        </div>
+                    </section>
+
+                    <hr class="border-gray-100">
+
+                    <!-- 評分結果區 (AI 自動填寫) -->
+                    <section>
+                        <div class="flex justify-between items-end mb-6 sticky top-0 bg-white/95 backdrop-blur-sm py-2 z-10 border-b border-transparent" id="score-header">
+                            <h3 class="font-semibold text-gray-900 text-xl">評分結果</h3>
+                            <div class="flex items-baseline gap-1 bg-gray-50 px-4 py-2 rounded-xl">
+                                <span class="text-xs text-gray-500 font-bold uppercase tracking-wide mr-2">總分</span>
+                                <span id="total-score-display" class="text-3xl font-bold text-[#0071E3]">0</span>
+                                <span class="text-gray-400 text-lg">/ 12</span>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="group mb-6">
+                            <div class="flex justify-between mb-2 px-1">
+                                <label class="font-semibold text-gray-800">內容 (Content)</label>
+                                <span class="font-bold text-gray-400 text-sm"><span id="val-content" class="text-blue-600 text-base">0</span> / 4</span>
+                            </div>
+                            <input type="range" id="rng-content" min="0" max="4" step="1" value="0" class="mb-4 accent-blue-500" oninput="updateGrades()">
+                            <textarea id="com-content" rows="2" class="glass-input w-full rounded-xl p-3 text-sm placeholder-gray-400" placeholder="AI 評語將顯示於此..."></textarea>
+                        </div>
+
+                        <!-- Language -->
+                        <div class="group mb-6">
+                            <div class="flex justify-between mb-2 px-1">
+                                <label class="font-semibold text-gray-800">語言 (Language)</label>
+                                <span class="font-bold text-gray-400 text-sm"><span id="val-language" class="text-blue-600 text-base">0</span> / 4</span>
+                            </div>
+                            <input type="range" id="rng-language" min="0" max="4" step="1" value="0" class="mb-4" oninput="updateGrades()">
+                            <textarea id="com-language" rows="2" class="glass-input w-full rounded-xl p-3 text-sm placeholder-gray-400" placeholder="AI 評語將顯示於此..."></textarea>
+                        </div>
+
+                        <!-- Organisation -->
+                        <div class="group mb-6">
+                            <div class="flex justify-between mb-2 px-1">
+                                <label class="font-semibold text-gray-800">組織 (Organisation)</label>
+                                <span class="font-bold text-gray-400 text-sm"><span id="val-org" class="text-blue-600 text-base">0</span> / 2</span>
+                            </div>
+                            <input type="range" id="rng-org" min="0" max="2" step="1" value="0" class="mb-4" oninput="updateGrades()">
+                            <textarea id="com-org" rows="2" class="glass-input w-full rounded-xl p-3 text-sm placeholder-gray-400" placeholder="AI 評語將顯示於此..."></textarea>
+                        </div>
+
+                        <!-- Features -->
+                        <div class="group mb-6">
+                            <div class="flex justify-between mb-2 px-1">
+                                <label class="font-semibold text-gray-800">特色 (Features)</label>
+                                <span class="font-bold text-gray-400 text-sm"><span id="val-feature" class="text-blue-600 text-base">0</span> / 2</span>
+                            </div>
+                            <input type="range" id="rng-feature" min="0" max="2" step="1" value="0" class="mb-4" oninput="updateGrades()">
+                            <textarea id="com-feature" rows="2" class="glass-input w-full rounded-xl p-3 text-sm placeholder-gray-400" placeholder="AI 評語將顯示於此..."></textarea>
+                        </div>
+                    </section>
+
+                    <!-- 總結與建議 -->
+                    <div class="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-regular fa-lightbulb text-blue-500"></i>
+                            <h4 class="text-sm font-bold text-blue-800 uppercase tracking-wide">整體建議</h4>
+                        </div>
+                        <textarea id="overall-feedback" rows="3" class="w-full bg-transparent border-none focus:ring-0 text-gray-700 p-0 resize-none text-sm leading-relaxed" placeholder="AI 總結建議將顯示於此..."></textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 狀態管理
+        let currentZoom = 1.0;
+        let submissionMode = 'file'; // 'file' 或 'text'
+        let uploadedFile = null;
+        let uploadedFileBase64 = null;
+        let studentTextContent = ""; // 儲存純文字輸入
+        let questionFileBase64 = null;
+        let questionFile = null;
+
+        // 初始化
+        window.onload = () => {
+            const savedKey = localStorage.getItem('openai_api_key');
+            const savedUrl = localStorage.getItem('custom_api_url') || "https://api.openai.com/v1/chat/completions";
+            const savedModel = localStorage.getItem('custom_api_model') || "gpt-4o";
+
+            if (savedKey) document.getElementById('api-key-input').value = savedKey;
+            document.getElementById('api-url-input').value = savedUrl;
+            document.getElementById('api-model-input').value = savedModel;
+            
+            updateGrades();
+        };
+
+        // UI 操作
+        function toggleSettings() {
+            document.getElementById('settings-modal').classList.toggle('hidden');
+        }
+
+        // 模式切換
+        function switchToTextMode() {
+            document.getElementById('drop-area-container').classList.add('hidden-section');
+            document.getElementById('text-input-zone').classList.remove('hidden-section');
+        }
+
+        function switchToFileMode() {
+            document.getElementById('text-input-zone').classList.add('hidden-section');
+            document.getElementById('drop-area-container').classList.remove('hidden-section');
+        }
+
+        function handleTextSubmit() {
+            const text = document.getElementById('direct-text-input').value;
+            if (!text.trim()) {
+                alert("請輸入文字內容！");
+                return;
+            }
+            
+            submissionMode = 'text';
+            studentTextContent = text;
+            
+            // 隱藏上傳區，顯示工作區
+            document.getElementById('upload-zone').classList.add('hidden-section');
+            document.getElementById('workspace').classList.remove('hidden-section');
+            document.getElementById('workspace').style.opacity = '1';
+            
+            // 顯示文字預覽
+            document.getElementById('image-preview').classList.add('hidden');
+            document.getElementById('pdf-preview').classList.add('hidden');
+            document.getElementById('text-preview').classList.remove('hidden');
+            document.getElementById('text-preview-content').textContent = text;
+            
+            // 隱藏圖片縮放控制項 (因為是純文字)
+            document.getElementById('viewer-controls').classList.add('invisible');
+        }
+
+        // 快速設定 Provider
+        function setProvider(type) {
+            const urlInput = document.getElementById('api-url-input');
+            const modelInput = document.getElementById('api-model-input');
+            
+            if (type === 'openai') {
+                urlInput.value = "https://api.openai.com/v1/chat/completions";
+                modelInput.value = "gpt-4o";
+            } else if (type === 'chatanywhere') {
+                urlInput.value = "https://api.chatanywhere.tech/v1/chat/completions";
+                modelInput.value = "gpt-3.5-turbo"; 
+            }
+            saveSettings();
+        }
+
+        function saveSettings() {
+            const key = document.getElementById('api-key-input').value;
+            const url = document.getElementById('api-url-input').value;
+            const model = document.getElementById('api-model-input').value;
+
+            localStorage.setItem('openai_api_key', key);
+            localStorage.setItem('custom_api_url', url);
+            localStorage.setItem('custom_api_model', model);
+        }
+
+        // 檔案處理：學生作業 (拖曳/點擊)
+        function handleFileSelect(e) {
+            if(e.target.files.length > 0) processMainFile(e.target.files[0]);
+        }
+        function handleDragOver(e) { e.preventDefault(); e.stopPropagation(); }
+        function handleDrop(e) { e.preventDefault(); e.stopPropagation(); if(e.dataTransfer.files.length > 0) processMainFile(e.dataTransfer.files[0]); }
+
+        function processMainFile(file) {
+            submissionMode = 'file';
+            uploadedFile = file;
+            
+            // UI 切換
+            document.getElementById('upload-zone').classList.add('hidden-section');
+            document.getElementById('workspace').classList.remove('hidden-section');
+            document.getElementById('workspace').style.opacity = '1';
+            document.getElementById('viewer-controls').classList.remove('invisible');
+
+            // 重置縮放
+            currentZoom = 1.0;
+            const img = document.getElementById('image-preview');
+            img.style.transform = 'scale(1)';
+
+            // 預覽處理
+            document.getElementById('text-preview').classList.add('hidden');
+            
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedFileBase64 = e.target.result;
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    document.getElementById('pdf-preview').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type === 'application/pdf') {
+                const fileURL = URL.createObjectURL(file);
+                document.getElementById('pdf-preview').src = fileURL;
+                document.getElementById('pdf-preview').classList.remove('hidden');
+                img.classList.add('hidden');
+            }
+        }
+
+        // 檔案處理：題目圖片
+        function handleQuestionUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                questionFile = file; 
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    questionFileBase64 = e.target.result;
+                    const img = document.getElementById('question-image-preview');
+                    img.src = e.target.result;
+                    document.getElementById('question-image-preview-container').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeQuestionImage() {
+            questionFileBase64 = null;
+            questionFile = null;
+            document.getElementById('question-image-preview-container').classList.add('hidden');
+            document.getElementById('question-file-input').value = '';
+        }
+
+        // Tesseract OCR
+        async function recognizeText(file) {
+            const worker = await Tesseract.createWorker('eng'); 
+            const ret = await worker.recognize(file);
+            await worker.terminate();
+            return ret.data.text;
+        }
+
+        // 核心功能：AI 評分
+        async function runAIGrading() {
+            const apiKey = document.getElementById('api-key-input').value;
+            const apiUrl = document.getElementById('api-url-input').value || "https://api.openai.com/v1/chat/completions";
+            const apiModel = document.getElementById('api-model-input').value || "gpt-4o";
+
+            if (!apiKey) {
+                alert("請先輸入 API Key。");
+                toggleSettings();
+                return;
+            }
+            
+            // 驗證是否已提供內容 (檔案或純文字)
+            if (submissionMode === 'file' && !uploadedFile) {
+                alert("請先上傳作業圖片或 PDF。");
+                return;
+            }
+            if (submissionMode === 'text' && !studentTextContent) {
+                alert("文字內容為空。");
+                return;
+            }
+
+            const btn = document.getElementById('ai-btn');
+            const btnText = document.getElementById('ai-btn-text');
+            const loader = document.getElementById('ai-loader');
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+
+            try {
+                // 判斷是否需要 OCR 模式
+                // 規則：如果是純文字模式，不需要 Vision，也不需要作業 OCR (但可能需要題目 OCR)
+                // 規則：如果是檔案模式，依據供應商和模型決定 (ChatAnywhere = 強制 OCR)
+                
+                const isChatAnywhere = apiUrl.includes("chatanywhere");
+                const isVisionModel = apiModel.includes("gpt-4") && !apiModel.includes("turbo-preview");
+                
+                // 是否使用純文字 Prompt (包含 OCR 結果或手動輸入)
+                let useTextPrompt = (submissionMode === 'text') || isChatAnywhere || !isVisionModel;
+                
+                // PDF 檢查
+                if (submissionMode === 'file' && uploadedFile.type === 'application/pdf' && !useTextPrompt) {
+                     // 如果是 PDF 且原本打算用 Vision (OpenAI)，必須降級為 OCR (但目前 OCR 也不支援 PDF 直接讀取，除非轉圖)
+                     // 簡單起見，提示不支援
+                     alert("PDF 暫不支援 Vision 模式。請使用純文字輸入或將 PDF 轉圖片。");
+                     throw new Error("PDF not supported for Vision.");
+                }
+
+                let essayText = "";
+                let questionText = "";
+                let messages = [];
+
+                if (useTextPrompt) {
+                    // --- 純文字 / OCR 模式 ---
+                    
+                    // 1. 取得學生作業文字
+                    if (submissionMode === 'text') {
+                        essayText = studentTextContent;
+                    } else {
+                        btnText.textContent = "OCR 辨識作業中...";
+                        if (uploadedFile.type === 'application/pdf') throw new Error("PDF 不支援 OCR，請轉圖片。");
+                        essayText = await recognizeText(uploadedFile);
+                    }
+                    
+                    // 2. 辨識題目 (如果有圖片)
+                    if (questionFile) {
+                        btnText.textContent = "OCR 辨識題目中...";
+                        questionText = await recognizeText(questionFile);
+                    }
+
+                    // 顯示文字結果 (Debug用)
+                    document.getElementById('ocr-result-box').classList.remove('hidden');
+                    document.getElementById('ocr-text-display').value = essayText.substring(0, 500) + (essayText.length>500?"...":"");
+
+                    btnText.textContent = "AI 分析中...";
+
+                    const requirementsText = document.getElementById('requirements').value;
+                    const promptText = `
+Task: Grade this student essay.
+
+Marking Scheme Structure:
+1. Content (0-4)
+2. Language (0-4)
+3. Organisation (0-2)
+4. Features (0-2)
+
+Total: 12 marks.
+
+Specific Requirements: ${requirementsText || "None provided."}
+${questionText ? "Question Paper Content: " + questionText : ""}
+
+Student Essay Content (${submissionMode === 'text' ? 'Direct Input' : 'OCR Transcribed'}):
+"""
+${essayText}
+"""
+
+Output format (JSON):
+{
+  "scores": { "content": number, "language": number, "org": number, "feat": number },
+  "comments": { "content": "string", "language": "string", "org": "string", "feat": "string", "overall": "string" }
+}
+Return comments in Traditional Chinese (繁體中文).
+`;
+                    messages = [
+                        { role: "system", content: "You are an English teacher." },
+                        { role: "user", content: promptText }
+                    ];
+
+                } else {
+                    // --- Vision 模式 (僅適用於檔案模式 + OpenAI GPT-4o) ---
+                    btnText.textContent = "AI 視覺分析中...";
+                    const requirementsText = document.getElementById('requirements').value;
+                    
+                    messages = [
+                        { role: "system", content: "You are an English teacher. Output valid JSON." },
+                        { role: "user", content: [
+                            { type: "text", text: `Grade this handwritten essay. Requirements: ${requirementsText}. Output JSON.` },
+                            { type: "image_url", image_url: { url: uploadedFileBase64 } }
+                        ]}
+                    ];
+                    if (questionFileBase64) {
+                        messages[1].content.push({ type: "image_url", image_url: { url: questionFileBase64 } });
+                    }
+                }
+
+                // 發送 API
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: apiModel,
+                        messages: messages,
+                        response_format: { type: "json_object" },
+                        max_tokens: 1000
+                    })
+                });
+
+                if (!response.ok) {
+                    if (response.status === 403) throw new Error("403 Forbidden: API Key 權限不足或模型錯誤。");
+                    throw new Error("API Error: " + response.status);
+                }
+
+                const data = await response.json();
+                
+                // 解析結果
+                let result;
+                try {
+                     result = JSON.parse(data.choices[0].message.content);
+                } catch (e) {
+                     const content = data.choices[0].message.content;
+                     const jsonMatch = content.match(/\{[\s\S]*\}/);
+                     if (jsonMatch) result = JSON.parse(jsonMatch[0]);
+                     else throw new Error("AI 回傳格式無法解析");
+                }
+
+                // 填入 UI
+                document.getElementById('rng-content').value = result.scores.content;
+                document.getElementById('rng-language').value = result.scores.language;
+                document.getElementById('rng-org').value = result.scores.org;
+                document.getElementById('rng-feature').value = result.scores.feat;
+
+                document.getElementById('com-content').value = result.comments.content;
+                document.getElementById('com-language').value = result.comments.language;
+                document.getElementById('com-org').value = result.comments.org;
+                document.getElementById('com-feature').value = result.comments.feat;
+                document.getElementById('overall-feedback').value = result.comments.overall;
+
+                updateGrades();
+
+            } catch (error) {
+                console.error(error);
+                alert("執行失敗: " + error.message);
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = "開始評分";
+                loader.classList.add('hidden');
+            }
+        }
+
+        // 評分顯示與其他功能
+        function updateGrades() {
+            const content = parseInt(document.getElementById('rng-content').value) || 0;
+            const language = parseInt(document.getElementById('rng-language').value) || 0;
+            const org = parseInt(document.getElementById('rng-org').value) || 0;
+            const feature = parseInt(document.getElementById('rng-feature').value) || 0;
+
+            document.getElementById('val-content').textContent = content;
+            document.getElementById('val-language').textContent = language;
+            document.getElementById('val-org').textContent = org;
+            document.getElementById('val-feature').textContent = feature;
+
+            const total = content + language + org + feature;
+            const totalDisplay = document.getElementById('total-score-display');
+            totalDisplay.textContent = total;
+            
+            if (total >= 10) totalDisplay.style.color = "#34C759";
+            else if (total >= 6) totalDisplay.style.color = "#FF9500";
+            else totalDisplay.style.color = "#FF3B30";
+        }
+
+        function zoomViewer(change) {
+            const img = document.getElementById('image-preview');
+            currentZoom = Math.max(0.2, currentZoom + change);
+            img.style.transform = `scale(${currentZoom})`;
+        }
+
+        function resetApp() {
+            if(confirm('確定要清除目前的評分並重新開始嗎？')) location.reload();
+        }
+        
+        function exportReport() {
+            // 決定檔案名稱
+            let fileName = '未命名作業';
+            if (submissionMode === 'file' && uploadedFile) fileName = uploadedFile.name;
+            if (submissionMode === 'text') fileName = '純文字輸入作業';
+
+            const data = {
+                file: fileName,
+                date: new Date().toLocaleDateString('zh-TW'),
+                scores: {
+                    content: document.getElementById('rng-content').value,
+                    language: document.getElementById('rng-language').value,
+                    org: document.getElementById('rng-org').value,
+                    feat: document.getElementById('rng-feature').value,
+                    total: document.getElementById('total-score-display').textContent
+                },
+                comments: {
+                    req: document.getElementById('requirements').value,
+                    content: document.getElementById('com-content').value,
+                    language: document.getElementById('com-language').value,
+                    org: document.getElementById('com-org').value,
+                    feat: document.getElementById('com-feature').value,
+                    overall: document.getElementById('overall-feedback').value
+                }
+            };
+            
+            const win = window.open('', '_blank');
+            if(win) {
+                win.document.write(`<html><head><title>評分報告</title><style>body{font-family:sans-serif;padding:30px;} .box{border:1px solid #ddd;padding:15px;margin:10px 0;border-radius:8px;} .header{font-size:20px;font-weight:bold;margin-bottom:20px;}</style></head><body>
+                    <div class="header">評分報告: ${data.file}</div>
+                    <div class="box" style="background:#f0f7ff;border-color:#0071e3;"><strong>總分: ${data.scores.total}/12</strong></div>
+                    <div class="box"><strong>內容 (${data.scores.content}/4):</strong><br>${data.comments.content}</div>
+                    <div class="box"><strong>語言 (${data.scores.language}/4):</strong><br>${data.comments.language}</div>
+                    <div class="box"><strong>組織 (${data.scores.org}/2):</strong><br>${data.comments.org}</div>
+                    <div class="box"><strong>特色 (${data.scores.feat}/2):</strong><br>${data.comments.feat}</div>
+                    <div class="box"><strong>整體建議:</strong><br>${data.comments.overall}</div>
+                </body></html>`);
+            }
+        }
+    </script>
+</body>
+</html>
