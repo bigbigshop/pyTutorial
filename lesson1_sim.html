@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Console Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+        
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: screen;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .terminal {
+            background-color: #0c0c0c;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            font-family: 'Fira Code', 'Courier New', monospace;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .terminal-header {
+            background-color: #333;
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+
+        .terminal-body {
+            padding: 20px;
+            color: #d1d1d1;
+            font-size: 16px;
+            min-height: 400px;
+        }
+
+        .input-line {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .prompt { color: #fff; margin-right: 10px; }
+
+        input {
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            outline: none;
+            flex: 1;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        .output-block {
+            margin-top: 20px;
+            color: #00ff00;
+            white-space: pre;
+            line-height: 1.2;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #00ff00;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div class="ml-4 text-xs text-gray-400">python3 profile_generator.py</div>
+        </div>
+        <div class="terminal-body" id="console">
+            <!-- 步驟 1: 姓名 -->
+            <div id="step-name" class="input-line">
+                <span class="prompt">Your name：</span>
+                <input type="text" id="in-name" autofocus autocomplete="off">
+            </div>
+
+            <!-- 步驟 2: 學校 -->
+            <div id="step-school" class="input-line hidden">
+                <span class="prompt">Your school：</span>
+                <input type="text" id="in-school" autocomplete="off">
+            </div>
+
+            <!-- 步驟 3: 國文 -->
+            <div id="step-chi" class="input-line hidden">
+                <span class="prompt">Chinese Marks：</span>
+                <input type="number" id="in-chi" autocomplete="off">
+            </div>
+
+            <!-- 步驟 4: 英文 -->
+            <div id="step-eng" class="input-line hidden">
+                <span class="prompt">English Marks：</span>
+                <input type="number" id="in-eng" autocomplete="off">
+            </div>
+
+            <!-- 步驟 5: 數學 -->
+            <div id="step-math" class="input-line hidden">
+                <span class="prompt">Maths Marks：</span>
+                <input type="number" id="in-math" autocomplete="off">
+            </div>
+
+            <!-- 結果輸出 -->
+            <div id="final-output" class="output-block"></div>
+        </div>
+    </div>
+
+    <script>
+        const data = {
+            name: '',
+            school: '',
+            chi: 0,
+            eng: 0,
+            math: 0
+        };
+
+        const steps = [
+            { id: 'name', next: 'school' },
+            { id: 'school', next: 'chi' },
+            { id: 'chi', next: 'eng' },
+            { id: 'eng', next: 'math' },
+            { id: 'math', next: null }
+        ];
+
+        let currentStepIndex = 0;
+
+        function handleInput(e) {
+            if (e.key === 'Enter') {
+                const currentStep = steps[currentStepIndex];
+                const inputElement = document.getElementById(`in-${currentStep.id}`);
+                const val = inputElement.value;
+
+                // 儲存資料
+                data[currentStep.id] = val;
+
+                // 鎖定當前輸入框 (模擬已輸入)
+                inputElement.disabled = true;
+                inputElement.style.color = '#fff';
+
+                if (currentStep.next) {
+                    // 顯示下一步
+                    const nextDiv = document.getElementById(`step-${currentStep.next}`);
+                    nextDiv.classList.remove('hidden');
+                    nextDiv.querySelector('input').focus();
+                    currentStepIndex++;
+                } else {
+                    // 全部完成，顯示結果
+                    showResult();
+                }
+            }
+        }
+
+        function showResult() {
+            const total = parseFloat(data.chi || 0) + parseFloat(data.eng || 0) + parseFloat(data.math || 0);
+            const outputArea = document.getElementById('final-output');
+            
+            outputArea.innerHTML = `
+
+------------------------------
+      MY PROFILE CARD
+------------------------------
+Name： ${data.name}
+School： ${data.school}
+Full Marks： ${total}
+------------------------------
+<span class="cursor"></span>`;
+        }
+
+        // 為所有輸入框綁定 Enter 事件
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keydown', handleInput);
+        });
+
+        // 點擊終端機任何地方都聚焦到當前輸入框
+        document.querySelector('.terminal-body').addEventListener('click', () => {
+            const currentStep = steps[currentStepIndex];
+            document.getElementById(`in-${currentStep.id}`).focus();
+        });
+    </script>
+</body>
+</html>
