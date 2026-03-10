@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 學習實驗室 - 商店收銀系統</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Noto+Sans+TC:wght@400;700&display=swap');
+        
+        body {
+            background-color: #121212;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #e0e0e0;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal {
+            background-color: #0c0c0c;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        .terminal-header {
+            background-color: #333;
+            padding: 8px 12px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        
+        input {
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            outline: none;
+            font-family: 'Fira Code', monospace;
+            width: 100%;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #00ff00;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .python-comment { color: #6272a4; }
+        
+        .empty-line {
+            height: 1.5rem;
+            border-bottom: 1px dashed #444;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <!-- 調整 max-w 為 7xl 並調整 grid 比例 -->
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-5 gap-8">
+        
+        <!-- 左側：教學與引導思考 (佔 2/5) -->
+        <div class="lg:col-span-2 space-y-6">
+            <header>
+                <h1 class="text-3xl font-bold text-white mb-2">Python 程式任務</h1>
+                <p class="text-gray-400 text-lg">任務：撰寫一個收銀系統，計算總價與找零！</p>
+            </header>
+
+            <!-- 邏輯說明區 -->
+            <section class="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-sm font-bold text-gray-400 mb-2 uppercase tracking-widest">運算邏輯提示</h2>
+                <div class="bg-gray-900 p-4 rounded-lg space-y-2 text-sm text-yellow-500 font-mono">
+                    <div>總金額 = 單價 × 數量</div>
+                    <div>找零 = 實付金額 - 總金額</div>
+                </div>
+            </section>
+
+            <!-- 程式結構區 -->
+            <section class="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-xl font-bold text-green-400 mb-4 flex items-center">
+                    <span class="mr-2">💻</span> 程式碼結構挑戰
+                </h2>
+                
+                <div class="bg-gray-900 p-6 rounded-lg code-font text-xs leading-relaxed border-l-4 border-green-500">
+                    <div><span class="python-comment"># 1. 取得資料 (單價、數量、實付金額)</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div class="mt-4"><span class="python-comment"># 2. 進行運算 (計算總價與找零)</span></div>
+                    <div class="empty-line"></div>
+
+                    
+                    <div class="mt-4"><span class="python-comment"># 3. 輸出收據並判斷金額是否足夠</span></div>
+                    <div><span class="python-comment"># (進階挑戰：使用 if 和 else)</span></div>
+                    <div class="empty-line"></div>
+
+                </div>
+            </section>
+
+            <!-- 提示庫 -->
+            <div class="grid grid-cols-1 gap-4">
+                <div class="p-4 bg-gray-800/80 rounded-lg">
+                    <p class="text-pink-400 font-bold mb-3 text-sm">Python 工具箱：</p>
+                    <div class="space-y-2 text-xs text-gray-300">
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-pink-300 mr-3 w-16 text-center">int</code> 
+                            <span>將輸入轉換為「整數」（例如數量）</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-pink-300 mr-3 w-16 text-center">str</code> 
+                            <span>將數字轉回文字，以便跟其他文字串接輸出</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-blue-300 mr-3 w-16 text-center">if / else</code> 
+                            <span>用來判斷條件是否成立（例如錢夠不夠）</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-blue-300 mr-3 w-16 text-center">abs()</code> 
+                            <span>取得絕對值（將負數變成正數）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側：互動終端機 (佔 3/5) -->
+        <div class="lg:col-span-3 sticky top-8">
+            <div class="terminal flex flex-col h-[600px]">
+                <div class="terminal-header border-b border-gray-800">
+                    <div class="dot bg-red-500"></div>
+                    <div class="dot bg-yellow-500"></div>
+                    <div class="dot bg-green-500"></div>
+                    <span class="ml-2 text-xs text-gray-500 font-mono italic">Terminal - VitaWorld Console v1.0</span>
+                </div>
+                
+                <div class="terminal-body p-10 code-font text-xl flex-1 overflow-y-auto" id="console">
+                    <div id="run-flow" class="space-y-6">
+                        <div id="row-1" class="flex flex-col">
+                            <span class="text-gray-500 text-sm mb-1"># Step 1: Input Session</span>
+                            <div class="flex items-center">
+                                <span class="text-white mr-4 whitespace-nowrap">商品單價 ($): </span>
+                                <input type="number" id="in-price" autofocus autocomplete="off" step="any" class="flex-1">
+                            </div>
+                        </div>
+
+                        <div id="row-2" class="flex flex-col hidden">
+                            <div class="flex items-center">
+                                <span class="text-white mr-4 whitespace-nowrap">購買數量: </span>
+                                <input type="number" id="in-qty" autocomplete="off" class="flex-1">
+                            </div>
+                        </div>
+
+                        <div id="row-3" class="flex flex-col hidden">
+                            <div class="flex items-center">
+                                <span class="text-white mr-4 whitespace-nowrap">客戶實付金額 ($): </span>
+                                <input type="number" id="in-pay" autocomplete="off" step="any" class="flex-1">
+                            </div>
+                        </div>
+
+                        <div id="row-res" class="mt-8 text-gray-300 hidden border-t border-gray-800 pt-6 leading-relaxed bg-gray-900/30 p-4 rounded"></div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 px-6 py-4 border-t border-gray-800 flex justify-between items-center">
+                    <span class="text-xs text-gray-500 italic">>>> 準備執行收銀運算...</span>
+                    <button onclick="resetConsole()" class="text-xs bg-gray-800 px-4 py-1.5 rounded text-gray-400 hover:bg-gray-700 hover:text-white transition">
+                        ↻ Reset Terminal
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const inPrice = document.getElementById('in-price');
+        const inQty = document.getElementById('in-qty');
+        const inPay = document.getElementById('in-pay');
+        
+        const row2 = document.getElementById('row-2');
+        const row3 = document.getElementById('row-3');
+        const rowRes = document.getElementById('row-res');
+
+        function setupFlow() {
+            inPrice.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && inPrice.value) {
+                    inPrice.disabled = true;
+                    row2.classList.remove('hidden');
+                    inQty.focus();
+                }
+            });
+
+            inQty.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && inQty.value) {
+                    inQty.disabled = true;
+                    row3.classList.remove('hidden');
+                    inPay.focus();
+                }
+            });
+
+            inPay.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && inPay.value) {
+                    inPay.disabled = true;
+                    generateReceipt();
+                }
+            });
+        }
+
+        function generateReceipt() {
+            const p = parseFloat(inPrice.value);
+            const q = parseInt(inQty.value);
+            const pay = parseFloat(inPay.value);
+            
+            const total = p * q;
+            const change = pay - total;
+
+            let html = `<div class="text-yellow-500 font-bold mb-3 text-2xl">--- Vita World Receipt ---</div>`;
+            html += `<div class="flex "><span>總計金額:</span> <span>$${total.toFixed(2)}</span></div>`;
+            html += `<div class="flex "><span>實付金額:</span> <span>$${pay.toFixed(2)}</span></div>`;
+            html += `<div class="text-gray-600 my-2">----------------------------------------</div>`;
+            
+            if (change >= 0) {
+                html += `<div class="flex text-green-400 font-bold text-2xl"><span>找零金額:</span> <span>$${change.toFixed(2)}</span></div>`;
+            } else {
+                html += `<div class="text-red-400 font-bold text-xl">⚠️ 錯誤：餘額不足！尚欠: $${Math.abs(change).toFixed(2)}</div>`;
+            }
+            
+            html += `<div class="text-gray-600 my-2">----------------------------------------</div>`;
+            html += `<div class="text-center italic text-gray-500 mt-4">感謝您的光臨，祝您有美好的一天！</div>`;
+            html += `<span class="cursor mt-2"></span>`;
+            
+            rowRes.innerHTML = html;
+            rowRes.classList.remove('hidden');
+        }
+
+        function resetConsole() {
+            [inPrice, inQty, inPay].forEach(el => {
+                el.disabled = false;
+                el.value = '';
+            });
+            row2.classList.add('hidden');
+            row3.classList.add('hidden');
+            rowRes.classList.add('hidden');
+            inPrice.focus();
+        }
+
+        document.getElementById('console').addEventListener('click', () => {
+            if (!inPrice.disabled) inPrice.focus();
+            else if (!inQty.disabled) inQty.focus();
+            else if (!inPay.disabled) inPay.focus();
+        });
+
+        window.onload = setupFlow;
+    </script>
+</body>
+</html>

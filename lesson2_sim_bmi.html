@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 學習實驗室 - BMI 計算器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Noto+Sans+TC:wght@400;700&display=swap');
+        
+        body {
+            background-color: #121212;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #e0e0e0;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal {
+            background-color: #0c0c0c;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        .terminal-header {
+            background-color: #333;
+            padding: 8px 12px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        
+        input {
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            outline: none;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #00ff00;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .python-comment { color: #6272a4; }
+        
+        .empty-line {
+            height: 1.5rem;
+            border-bottom: 1px dashed #444;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
+        
+        <!-- 左側：教學與引導思考 -->
+        <div class="space-y-6">
+            <header>
+                <h1 class="text-3xl font-bold text-white mb-2">Python 程式任務</h1>
+                <p class="text-gray-400 text-lg">挑戰：根據註解提示，嘗試在腦中構思出每一行程式碼！</p>
+            </header>
+
+            <!-- 數學公式區 -->
+            <section class="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-sm font-bold text-gray-400 mb-2 uppercase tracking-widest">數學運算邏輯</h2>
+                <div class="bg-gray-900 p-4 rounded-lg text-center text-2xl text-yellow-500">
+                    $$BMI = \frac{體重 (kg)}{身高 (m)^2}$$
+                </div>
+            </section>
+
+            <!-- 程式結構區 (純註解) -->
+            <section class="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-xl font-bold text-green-400 mb-4 flex items-center">
+                    <span class="mr-2">💻</span> 程式碼結構挑戰
+                </h2>
+                
+                <div class="bg-gray-900 p-6 rounded-lg code-font text-sm leading-relaxed border-l-4 border-green-500">
+                    <div><span class="python-comment"># 1. 取得體重並轉成數字 (w)</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div><span class="python-comment"># 2. 取得身高並轉成數字 (cm)</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div class="mt-4"><span class="python-comment"># 3. 換算單位：公分轉公尺 (m = cm / 100)</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div class="mt-4"><span class="python-comment"># 4. 運算 BMI (提示：平方使用 **)</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div class="mt-4"><span class="python-comment"># 5. 輸出最後的 BMI 結果</span></div>
+                    <div class="empty-line"></div>
+                </div>
+            </section>
+
+            <!-- 提示庫 (找回 Description) -->
+            <div class="grid grid-cols-1 gap-4">
+                <div class="p-4 bg-gray-800/80 rounded-lg">
+                    <p class="text-pink-400 font-bold mb-3 text-sm">Python 工具箱：</p>
+                    <div class="space-y-2 text-xs text-gray-300">
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-pink-300 mr-3 w-16 text-center">input</code> 
+                            <span>向使用者詢問資訊並獲取輸入</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-pink-300 mr-3 w-16 text-center">float</code> 
+                            <span>將輸入的文字轉換成「可計算的小數」</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-pink-300 mr-3 w-16 text-center">print</code> 
+                            <span>將計算結果顯示在螢幕上</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-blue-300 mr-3 w-16 text-center">/</code> 
+                            <span>除法運算子</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-blue-300 mr-3 w-16 text-center">**</code> 
+                            <span>次方運算子 (例如 2**2 代表 2 的平方)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側：互動終端機 -->
+        <div class="sticky top-8">
+            <div class="terminal flex flex-col h-[550px]">
+                <div class="terminal-header">
+                    <div class="dot bg-red-500"></div>
+                    <div class="dot bg-yellow-500"></div>
+                    <div class="dot bg-green-500"></div>
+                    <span class="ml-2 text-xs text-gray-500 font-mono italic">Python Console - Running bmi.py</span>
+                </div>
+                
+                <div class="terminal-body p-8 code-font text-xl flex-1 overflow-y-auto" id="console">
+                    <div id="run-flow">
+                        <div id="row-w" class="flex items-center mb-4">
+                            <span class="text-white mr-3">體重 (kg): </span>
+                            <input type="number" id="in-w" autofocus autocomplete="off" step="any">
+                        </div>
+
+                        <div id="row-cm" class="flex items-center mb-4 hidden">
+                            <span class="text-white mr-3">身高 (cm): </span>
+                            <input type="number" id="in-cm" autocomplete="off" step="any">
+                        </div>
+
+                        <div id="row-res" class="mt-6 text-green-400 hidden border-t border-gray-800 pt-4"></div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 px-6 py-4 border-t border-gray-800 flex justify-between items-center">
+                    <span class="text-xs text-gray-500">按下 Enter 執行下一行...</span>
+                    <button onclick="resetConsole()" class="text-xs bg-gray-800 px-3 py-1 rounded text-gray-400 hover:bg-gray-700 hover:text-white transition">
+                        ↻ Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const inputW = document.getElementById('in-w');
+        const inputCM = document.getElementById('in-cm');
+        const rowCM = document.getElementById('row-cm');
+        const rowRes = document.getElementById('row-res');
+
+        function handleInput() {
+            inputW.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && inputW.value) {
+                    inputW.disabled = true;
+                    inputW.classList.add('text-white');
+                    rowCM.classList.remove('hidden');
+                    inputCM.focus();
+                }
+            });
+
+            inputCM.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && inputCM.value) {
+                    inputCM.disabled = true;
+                    inputCM.classList.add('text-white');
+                    calculateBMI();
+                }
+            });
+        }
+
+        function calculateBMI() {
+            const w = parseFloat(inputW.value);
+            const cm = parseFloat(inputCM.value);
+            const m = cm / 100;
+            const bmi = w / (m ** 2);
+            rowRes.innerHTML = `你的 BMI 是： ${bmi.toFixed(2)}\n<span class="cursor"></span>`;
+            rowRes.classList.remove('hidden');
+        }
+
+        function resetConsole() {
+            inputW.disabled = false;
+            inputW.value = '';
+            inputW.classList.remove('text-white');
+            inputCM.disabled = false;
+            inputCM.value = '';
+            inputCM.classList.remove('text-white');
+            rowCM.classList.add('hidden');
+            rowRes.classList.add('hidden');
+            inputW.focus();
+        }
+
+        document.getElementById('console').addEventListener('click', () => {
+            if (!inputW.disabled) inputW.focus();
+            else if (!inputCM.disabled) inputCM.focus();
+        });
+
+        window.onload = handleInput;
+    </script>
+</body>
+</html>

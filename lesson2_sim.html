@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 學習實驗室 - 溫度轉換</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Noto+Sans+TC:wght@400;700&display=swap');
+        
+        body {
+            background-color: #121212;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #e0e0e0;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal {
+            background-color: #0c0c0c;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        .terminal-header {
+            background-color: #333;
+            padding: 8px 12px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        
+        input {
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            outline: none;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #00ff00;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .python-comment { color: #6272a4; }
+        
+        .empty-line {
+            height: 1.5rem;
+            border-bottom: 1px dashed #444;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
+        
+        <!-- 左側：教學與引導思考 -->
+        <div class="space-y-6">
+            <header>
+                <h1 class="text-3xl font-bold text-white mb-2">Python 程式任務</h1>
+                <p class="text-gray-400 text-lg">任務：嘗試將華氏溫度轉換公式寫成程式碼！</p>
+            </header>
+
+            <!-- 數學公式區 -->
+            <section class="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-sm font-bold text-gray-400 mb-2 uppercase tracking-widest">數學運算邏輯</h2>
+                <div class="bg-gray-900 p-4 rounded-lg text-center text-2xl text-yellow-500">
+                    $$C = (F - 32) \times \frac{5}{9}$$
+                </div>
+            </section>
+
+            <!-- 程式結構區 (純註解) -->
+            <section class="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-xl font-bold text-green-400 mb-4 flex items-center">
+                    <span class="mr-2">💻</span> 程式碼結構挑戰
+                </h2>
+                
+                <div class="bg-gray-900 p-6 rounded-lg code-font text-sm leading-relaxed border-l-4 border-green-500">
+                    <div><span class="python-comment"># 1. 取得華氏溫度並轉成數字 (f)</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div class="mt-4"><span class="python-comment"># 2. 依照公式計算攝氏溫度 (c)</span></div>
+                    <div class="mt-4"><span class="python-comment"># 提示：先減 32，再乘以 5，最後除以 9</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div class="mt-4"><span class="python-comment"># 3. 輸出最後的攝氏溫度結果</span></div>
+                    <div class="empty-line"></div>
+                </div>
+            </section>
+
+            <!-- 提示庫 -->
+            <div class="grid grid-cols-1 gap-4">
+                <div class="p-4 bg-gray-800/80 rounded-lg">
+                    <p class="text-pink-400 font-bold mb-3 text-sm">Python 工具箱：</p>
+                    <div class="space-y-2 text-xs text-gray-300">
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-pink-300 mr-3 w-16 text-center">input</code> 
+                            <span>獲取使用者的輸入資訊</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-pink-300 mr-3 w-16 text-center">float</code> 
+                            <span>將輸入轉換成數字類型（可計算）</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-pink-300 mr-3 w-16 text-center">print</code> 
+                            <span>顯示結果在終端機上</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-blue-300 mr-3 w-16 text-center">*</code> 
+                            <span>乘法運算子</span>
+                        </div>
+                        <div class="flex items-center">
+                            <code class="bg-gray-900 px-2 py-1 rounded text-blue-300 mr-3 w-16 text-center">/</code> 
+                            <span>除法運算子</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側：互動終端機 -->
+        <div class="sticky top-8">
+            <div class="terminal flex flex-col h-[550px]">
+                <div class="terminal-header">
+                    <div class="dot bg-red-500"></div>
+                    <div class="dot bg-yellow-500"></div>
+                    <div class="dot bg-green-500"></div>
+                    <span class="ml-2 text-xs text-gray-500 font-mono italic">Terminal - python3 temperature.py</span>
+                </div>
+                
+                <div class="terminal-body p-8 code-font text-xl flex-1 overflow-y-auto" id="console">
+                    <div id="run-flow">
+                        <div id="row-f" class="flex items-center mb-4">
+                            <span class="text-white mr-3">華氏溫度 (F): </span>
+                            <input type="number" id="in-f" autofocus autocomplete="off" step="any">
+                        </div>
+
+                        <div id="row-res" class="mt-6 text-green-400 hidden border-t border-gray-800 pt-4"></div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 px-6 py-4 border-t border-gray-800 flex justify-between items-center">
+                    <span class="text-xs text-gray-500">輸入數值後按 Enter 執行...</span>
+                    <button onclick="resetConsole()" class="text-xs bg-gray-800 px-3 py-1 rounded text-gray-400 hover:bg-gray-700 hover:text-white transition">
+                        ↻ Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const inputF = document.getElementById('in-f');
+        const rowRes = document.getElementById('row-res');
+
+        function handleInput() {
+            inputF.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && inputF.value) {
+                    inputF.disabled = true;
+                    inputF.classList.add('text-white');
+                    calculateTemp();
+                }
+            });
+        }
+
+        function calculateTemp() {
+            const f = parseFloat(inputF.value);
+            // C = (F - 32) * 5 / 9
+            const c = (f - 32) * 5 / 9;
+            
+            rowRes.innerHTML = `攝氏溫度 (C) 是： ${c.toFixed(2)}\n<span class="cursor"></span>`;
+            rowRes.classList.remove('hidden');
+        }
+
+        function resetConsole() {
+            inputF.disabled = false;
+            inputF.value = '';
+            inputF.classList.remove('text-white');
+            rowRes.classList.add('hidden');
+            inputF.focus();
+        }
+
+        document.getElementById('console').addEventListener('click', () => {
+            if (!inputF.disabled) inputF.focus();
+        });
+
+        window.onload = handleInput;
+    </script>
+</body>
+</html>
