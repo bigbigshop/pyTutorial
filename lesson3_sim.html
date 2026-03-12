@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 學習實驗室 - BMI 2.0 Mac Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Noto+Sans+TC:wght@400;700&display=swap');
+        
+        :root {
+            --mac-bg: #1e1e1e;
+            --mac-header: #333333;
+            --mac-text: #ffffff;
+            --mac-dim: #a0a0a0;
+            --mac-prompt: #32d74b;
+        }
+
+        body {
+            background-color: #121212;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #e0e0e0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* macOS Window Style */
+        .mac-window {
+            background-color: var(--mac-bg);
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            overflow: hidden;
+        }
+
+        .mac-header {
+            background-color: var(--mac-header);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .traffic-lights {
+            display: flex;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .light { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+
+        .header-title {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: var(--mac-dim);
+            left: 0;
+            pointer-events: none;
+            font-family: sans-serif;
+        }
+
+        /* Terminal Input */
+        input {
+            background: transparent;
+            border: none;
+            color: var(--mac-text);
+            outline: none;
+            font-family: 'Fira Code', monospace;
+            width: 100%;
+            caret-color: var(--mac-text);
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .prompt-symbol {
+            color: var(--mac-prompt);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        .empty-line {
+            height: 1.5rem;
+            border-bottom: 1px dashed #444;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            display: block;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: var(--mac-text);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* 隱藏捲動條 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-5 gap-8">
+        
+        <!-- 左側：教學與引導思考 -->
+        <div class="lg:col-span-2 space-y-6">
+            <header>
+                <h1 class="text-3xl font-bold text-white mb-2">終極挑戰：BMI 2.0</h1>
+                <p class="text-gray-400 text-lg">任務：使用 <code class="text-green-400">if-elif-else</code> 讓程式學會判斷健康狀態！</p>
+            </header>
+
+            <!-- 邏輯說明區 -->
+            <section class="bg-gray-800/30 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-sm font-bold text-gray-500 mb-4 uppercase tracking-widest text-xs">多重判斷邏輯 (Logic)</h2>
+                <div class="space-y-2 text-sm font-mono text-blue-300">
+                    <div class="flex justify-between border-b border-gray-700/50 pb-1">
+                        <span>BMI < 18.5</span>
+                        <span class="text-gray-400">體重過輕</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-700/50 pb-1">
+                        <span>18.5 ~ 24.9</span>
+                        <span class="text-gray-400">正常範圍</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-700/50 pb-1">
+                        <span>25.0 ~ 29.9</span>
+                        <span class="text-gray-400">過重</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-700/50 pb-1">
+                        <span>≥ 30.0</span>
+                        <span class="text-gray-400">肥胖</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 程式結構區 -->
+            <section class="bg-gray-800/30 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-xl font-bold text-green-400 mb-4 flex items-center text-XL">
+                    <span class="mr-2">💻</span> 程式碼練習步驟
+                </h2>
+                
+                <div class="bg-black/40 p-5 rounded-lg code-font text-xs leading-relaxed">
+                    <div><span class="python-comment"># 1. 詢問並轉換 float(input())</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div class="mt-4"><span class="python-comment"># 2. 計算 BMI 並 round(bmi, 1)</span></div>
+                    <div class="empty-line"></div>
+                    
+                    <div class="mt-4"><span class="python-comment"># 3. 使用 if-elif-else 判斷區間</span></div>
+                    <div class="empty-line"></div>
+                    <div class="empty-line"></div>
+                </div>
+            </section>
+
+            <!-- 工具箱 -->
+            <div class="p-4 bg-gray-900/50 rounded-lg border border-gray-800">
+                <p class="text-pink-400 font-bold mb-3 text-xs uppercase">Python 工具箱</p>
+                <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-400 font-mono">
+                    <div class="flex items-center gap-2">
+                        <code class="bg-black px-1 rounded text-blue-300">float()</code>
+                        <span>浮點數轉換</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <code class="bg-black px-1 rounded text-blue-300">elif</code>
+                        <span>多重判斷</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側：MacBook Terminal 互動區 -->
+        <div class="lg:col-span-3 lg:sticky lg:top-8">
+            <div class="mac-window flex flex-col h-[600px]">
+                <!-- macOS Header -->
+                <div class="mac-header">
+                    <div class="traffic-lights">
+                        <div class="light red"></div>
+                        <div class="light yellow"></div>
+                        <div class="light green"></div>
+                    </div>
+                    <div class="header-title">admin — smart_bmi.py — zsh</div>
+                </div>
+                
+                <!-- Terminal Body -->
+                <div class="p-8 code-font text-lg flex-1 overflow-y-auto no-scrollbar" id="console">
+                    <div class="text-sm text-gray-500 mb-8 font-sans">Last login: <span id="current-time"></span> on ttys001</div>
+                    
+                    <div id="interaction-flow" class="space-y-4">
+                        <!-- 身高輸入 -->
+                        <div id="row-h" class="flex items-center">
+                            <span class="prompt-symbol">%</span>
+                            <span class="whitespace-nowrap mr-2">請輸入您的身高 (cm):</span>
+                            <input type="number" id="in-h" autofocus autocomplete="off" step="any" class="flex-1">
+                        </div>
+
+                        <!-- 體重輸入 -->
+                        <div id="row-w" class="hidden flex items-center">
+                            <span class="prompt-symbol">%</span>
+                            <span class="whitespace-nowrap mr-2">請輸入您的體重 (kg):</span>
+                            <input type="number" id="in-w" autocomplete="off" step="any" class="flex-1">
+                        </div>
+
+                        <!-- 結果輸出 -->
+                        <div id="row-res" class="hidden pt-4 space-y-1">
+                            <!-- 由 JS 動態注入 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Status -->
+                <div class="bg-[#252525] px-6 py-3 border-t border-[#333] flex justify-between items-center text-[11px]">
+                    <div class="text-gray-500 flex items-center gap-3">
+                        <span id="status-text" class="font-mono">STATUS: READY</span>
+                    </div>
+                    <button onclick="resetTerminal()" class="text-gray-400 hover:text-white transition flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                        RESTART_SESSION
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const inH = document.getElementById('in-h');
+        const inW = document.getElementById('in-w');
+        const rowW = document.getElementById('row-w');
+        const rowRes = document.getElementById('row-res');
+        const statusText = document.getElementById('status-text');
+
+        // 更新時間
+        document.getElementById('current-time').innerText = new Date().toLocaleString('zh-TW', { 
+            weekday: 'short', 
+            month: 'short', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit',
+            hour12: false 
+        });
+
+        inH.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && inH.value) {
+                inH.disabled = true;
+                rowW.classList.remove('hidden');
+                inW.focus();
+                statusText.innerText = "STATUS: WAITING_DATA";
+            }
+        });
+
+        inW.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && inW.value) {
+                inW.disabled = true;
+                calculateBMI();
+            }
+        });
+
+        function calculateBMI() {
+            statusText.innerText = "STATUS: RUNNING";
+            
+            setTimeout(() => {
+                const h = parseFloat(inH.value);
+                const w = parseFloat(inW.value);
+                let bmi = w / ((h / 100) ** 2);
+                bmi = Math.round(bmi * 10) / 10;
+
+                let status = "";
+
+                if (bmi < 18.5) { status = "過輕 (Underweight)"; }
+                else if (bmi < 25) { status = "正常範圍 (Normal)"; }
+                else if (bmi < 30) { status = "過重 (Overweight)"; }
+                else { status = "肥胖 (Obese)"; }
+
+                rowRes.innerHTML = `
+                    <div class="text-white">BMI 指數: ${bmi}</div>
+                    <div class="text-white mt-4">判斷結果: ${status}</div>
+                    <div class="mt-8 flex items-center">
+                        <span class="prompt-symbol">%</span>
+                        <span class="cursor"></span>
+                    </div>
+                `;
+                
+                rowRes.classList.remove('hidden');
+                statusText.innerText = "STATUS: FINISHED";
+                
+                const consoleDiv = document.getElementById('console');
+                consoleDiv.scrollTop = consoleDiv.scrollHeight;
+            }, 300);
+        }
+
+        function resetTerminal() {
+            inH.value = '';
+            inW.value = '';
+            inH.disabled = false;
+            inW.disabled = false;
+            rowW.classList.add('hidden');
+            rowRes.classList.add('hidden');
+            inH.focus();
+            statusText.innerText = "STATUS: READY";
+            document.getElementById('current-time').innerText = new Date().toLocaleString('zh-TW', { hour12: false });
+        }
+    </script>
+</body>
+</html>
