@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 程式編程：循環魔法 (完整版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="function.js" defer></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="slide-container" id="container">
+    <!-- Slide 1 -->
+    <div class="slide active" id="slide-1">
+        <div class="content-card text-center">
+            <h1>Python 循環魔法：<br>讓電腦自動工作</h1>
+            <p style="color: #34c759; font-weight: bold;">第四堂：while 循環與自動化任務</p>
+            <div class="mt-10 pt-6 border-t border-gray-200">
+                <p>中三級電腦科 | 讓重複工作變得輕鬆</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" id="slide-2">
+        <div class="content-card">
+            <div class="badge">AUTO</div>
+            <h2>什麼是「自動化」？</h2>
+            <p>讓電腦重複執行相同的工作，無需人工干預。</p>
+            <div class="grid-box">
+                <div class="feature-item">
+                    <p>🔄 <b>省時間：</b> 3 行代碼完成 100 次操作</p>
+                </div>
+                <div class="feature-item">
+                    <p>🎯 <b>零錯誤：</b> 電腦不會累，不會出錯</p>
+                </div>
+                <div class="feature-item">
+                    <p>💪 <b>大規模：</b> 輕易處理數千筆數據</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" id="slide-3">
+        <div class="content-card">
+            <div class="badge">WHILE LOOP</div>
+            <h2>While 循環語法</h2>
+            <p>只要條件成立，就重複執行程式碼：</p>
+            <div class="code-block">
+count = 1<br>
+while count <= 5:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(count)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;count = count + 1
+            </div>
+            <div style="background: #fef2f2; padding: 20px; border-radius: 20px; border: 1px solid #fecaca; margin-top: 20px;">
+                <p style="color: #b91c1c;">⚠️ <b>注意：</b> 一定要有讓條件變為 False 的程式碼，否則會變成「無限循環」！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide" id="slide-4">
+        <div class="content-card">
+            <div class="badge">F-STRING</div>
+            <h2>小知識：f-string 字符串格式化</h2>
+            <p>在 Python 中，f-string 是一種方便的字符串格式化方法：</p>
+            <div class="code-block">
+# 傳統方法<br>name = "小明"<br>
+age = 15<br>print("你好，" + name + "，你今年" + str(age) + "歲")<br><br># f-string 方法（更簡潔）<br>print(f"你好，{name}，你今年{age}歲")
+            </div>
+            <div style="background: #eff6ff; padding: 20px; border-radius: 20px; margin-top: 20px;">
+                <p style="font-weight: bold; color: #1d4ed8;">🎯 <b>重點：</b> 在字符串前加上 `f`，然後用 `{}` 包裹變數名，Python 會自動替換成變數的值！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide" id="slide-5">
+        <div class="content-card">
+            <div class="badge">PRACTICE 1</div>
+            <h2>任務一：列出 1-50</h2>
+            <p>跟著老師一起做，學會 while 循環的基本用法：</p>
+            <div class="code-block">
+# 初始化變數<br>
+number = 1<br><br>
+# 設定循環條件<br>while number <= 50:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(number)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# 每次加 1，避免無限循環<br>
+&nbsp;&nbsp;&nbsp;&nbsp;number = number + 1
+            </div>
+            <div class="feature-item mt-4">
+                <p>💡 <b>小技巧：</b> 可以用 `number += 1` 代替 `number = number + 1`，更簡潔！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide" id="slide-6">
+        <div class="content-card">
+            <div class="badge">PRACTICE 2</div>
+            <h2>任務二：7的乘數表</h2>
+            <p>使用 while 循環印出 7 的乘法表：</p>
+            <div class="code-block">
+# 初始化變數<br>
+count = 1<br><br>
+while count <= 10:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;result = 7 * count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(f"7 x {count} = {result}")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;count += 1
+            </div>
+            <div style="background: #eff6ff; padding: 20px; border-radius: 20px; margin-top: 20px;">
+                <p style="font-weight: bold; color: #1d4ed8;">📝 <b>練習：</b> 把 7 改成其他數字，例如 3 或 9，看看結果！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide" id="slide-7">
+        <div class="content-card">
+            <div class="badge" style="background: #ef4444;">DEBUG</div>
+            <h2>常見錯誤與避免方法</h2>
+            <div class="space-y-4">
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>無限循環：</b> 忘記更新計數器，導致程式永遠跑不完。</p>
+                </div>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>縮排錯誤：</b> 循環內的程式碼沒有正確縮排。</p>
+                </div>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>變數名稱錯誤：</b> 不小心打錯變數名，導致循環無法正常運作。</p>
+                </div>
+            </div>
+            <div class="feature-item mt-4">
+                <p>✅ <b>避免方法：</b> 先寫小例子測試，確認邏輯正確後再擴展。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide" id="slide-8">
+        <div class="content-card">
+            <div class="badge">CHALLENGE</div>
+            <h2>挑戰題：成績等級計算器</h2>
+            <p>融合前三堂所學，製作一個自動化成績評級系統：</p>
+            <div class="space-y-4">
+                <div class="feature-item">
+                    <p><b>🎯 任務要求：</b></p>
+                    <ol>
+                        <li>1. 使用 input() 詢問學生人數</li>
+                        <li>2. 使用 while 循環逐一處理每個學生</li>
+                        <li>3. 詢問每個學生的分數 (0-100)</li>
+                        <li>4. 使用 if-elif-else 判定等級：</li>
+                        <ul>
+                            <li>&nbsp;&nbsp;● 90-100: A 級</li>
+                            <li>&nbsp;&nbsp;● 80-89: B 級</li>
+                            <li>&nbsp;&nbsp;● 70-79: C 級</li>
+                            <li>&nbsp;&nbsp;● 60-69: D 級</li>
+                            <li>&nbsp;&nbsp;● 0-59: F 級</li>
+                        </ul>
+                        <li>5. 印出每個學生的分數和等級</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide" id="slide-9">
+        <div class="content-card">
+            <div class="badge">SOLUTION</div>
+            <h2>挑戰題解答步驟</h2>
+            <p>跟著老師一步步完成：</p>
+            <div class="code-block">
+# 步驟 1：詢問學生人數<br>student_count = int(input("請輸入學生人數: "))<br><br>
+# 步驟 2：初始化計數器<br>current = 1<br><br>
+# 步驟 3：進入循環<br>while current <= student_count:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# 步驟 4：詢問分數<br>
+&nbsp;&nbsp;&nbsp;&nbsp;score = float(input(f"請輸入第 {current} 位學生的分數: "))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# 步驟 5：判定等級<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score >= 90:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grade = "A"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elif score >= 80:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grade = "B"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elif score >= 70:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grade = "C"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elif score >= 60:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grade = "D"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grade = "F"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# 步驟 6：印出結果<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(f"第 {current} 位學生：分數 {score}，等級 {grade}")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# 步驟 7：更新計數器<br>
+&nbsp;&nbsp;&nbsp;&nbsp;current += 1
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide" id="slide-10">
+        <div class="content-card">
+            <div class="badge">BONUS</div>
+            <h2>進階挑戰：連續輸入直到 quit</h2>
+            <p>製作一個可以重複使用的計算器：</p>
+            <div class="code-block">
+# 無限循環，直到使用者輸入 quit
+while True:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;num = input("請輸入數字 (輸入 quit 退出): ")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# 檢查是否要退出<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if num == "quit":<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("程式結束，再見！")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break  # 跳出循環<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# 計算平方值<br>
+&nbsp;&nbsp;&nbsp;&nbsp;try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number = float(num)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;square = number ** 2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"{number} 的平方是 {square}")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;except:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("請輸入有效的數字！")
+            </div>
+            <div class="feature-item mt-4">
+                <p>💡 <b>學習重點：</b> `break` 語句可以隨時跳出循環。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11 -->
+    <div class="slide" id="slide-11">
+        <div class="content-card text-center">
+            <div class="badge" style="background: #34c759;">SUCCESS</div>
+            <h2>本堂總結</h2>
+            <p>你已經學會了如何讓電腦自動工作！</p>
+            <div style="background: #5856d6; color: white; padding: 40px; border-radius: 30px; margin-top: 30px;">
+                <h3 style="font-size: 28pt !important;">下堂預告：For 循環與列表</h3>
+                <p>學習更簡潔的循環方式，處理一系列數據！</p>
+            </div>
+            <p style="margin-top: 30px; font-style: italic; color: #94a3b8;">記住：循環是自動化的關鍵，多練習就能掌握！</p>
+        </div>
+    </div>
+</div>
+
+<div class="slide-nav">
+    <a class="nav-btn nav-left" href="https://colab.research.google.com/drive/1D8hxt9wty_8EwJKgVZ-USk3NgKh-wCi2?usp=sharing" target="_blank">COLAB DEMO</a>
+    <button class="nav-btn" onclick="prevSlide()">PREV</button>
+    <button class="nav-btn" onclick="nextSlide()">NEXT</button>
+</div>
+
+</body>
+</html>
