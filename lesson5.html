@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 程式編程：列表與循環 (完整版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="function.js" defer></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="slide-container" id="container">
+    <!-- Slide 1 -->
+    <div class="slide active" id="slide-1">
+        <div class="content-card text-center">
+            <h1>Python 列表魔法：<br>管理數據的超能力</h1>
+            <p style="color: #34c759; font-weight: bold;">第五堂：列表與 for...in 循環</p>
+            <div class="mt-10 pt-6 border-t border-gray-200">
+                <p>中三級電腦科 | 學會高效處理數據集合</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" id="slide-2">
+        <div class="content-card">
+            <div class="badge">ARRAY</div>
+            <h2>什麼是「列表」？</h2>
+            <p>列表（List）是 Python 中用來存儲多個數據的容器，就像一個可以裝很多東西的盒子：</p>
+            <div class="grid-box">
+                <div class="feature-item">
+                    <p>📦 <b>存多個值：</b> 一個變數存放多個數據</p>
+                </div>
+                <div class="feature-item">
+                    <p>🔢 <b>有序排列：</b> 每個元素有固定位置</p>
+                </div>
+                <div class="feature-item">
+                    <p>✏️ <b>可修改：</b> 隨時添加、刪除、修改元素</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" id="slide-3">
+        <div class="content-card">
+            <div class="badge">SYNTAX</div>
+            <h2>列表的語法</h2>
+            <p>使用方括號 `[]` 來創建列表，元素之間用逗號分隔：</p>
+            <div class="code-block">
+# 創建一個空列表<br>
+empty_list = []<br><br>
+# 創建包含元素的列表<br>
+fruits = ["蘋果", "香蕉", "橙子", "葡萄"]<br>
+numbers = [1, 2, 3, 4, 5]<br>
+mixed = ["小明", 15, True, 3.14]
+            </div>
+            <div style="background: #eff6ff; padding: 20px; border-radius: 20px; margin-top: 20px;">
+                <p style="font-weight: bold; color: #1d4ed8;">🎯 <b>重點：</b> 列表可以存放不同類型的數據！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide" id="slide-4">
+        <div class="content-card">
+            <div class="badge">PRACTICE 1</div>
+            <h2>任務一：訪問列表元素</h2>
+            <p>跟著老師一起做，學會如何取出列表中的元素：</p>
+            <div class="code-block">
+# 創建水果列表<br>
+fruits = ["蘋果", "香蕉", "橙子", "葡萄"]<br><br>
+# 透過索引訪問元素（索引從 0 開始）<br>
+print(fruits[0])   # 印出：蘋果<br>
+print(fruits[1])   # 印出：香蕉<br>
+print(fruits[2])   # 印出：橙子<br>
+print(fruits[-1])  # 印出：葡萄（最後一個元素）
+            </div>
+            <div class="feature-item mt-4">
+                <p>💡 <b>小技巧：</b> 使用負數索引可以從列表末尾開始計數！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide" id="slide-5">
+        <div class="content-card">
+            <div class="badge">OPERATION</div>
+            <h2>列表常用操作</h2>
+            <p>學習如何添加、修改和刪除列表元素：</p>
+            <div class="code-block">
+# 創建列表<br>
+scores = [85, 92, 78, 90]<br><br>
+# 添加元素到末尾<br>
+scores.append(88)<br>
+print(scores)  # [85, 92, 78, 90, 88]<br><br>
+# 修改指定位置的元素<br>
+scores[2] = 80<br>
+print(scores)  # [85, 92, 80, 90, 88]<br><br>
+# 刪除指定元素<br>
+del scores[1]<br>
+print(scores)  # [85, 80, 90, 88]
+            </div>
+            <div style="background: #fef2f2; padding: 20px; border-radius: 20px; border: 1px solid #fecaca; margin-top: 20px;">
+                <p style="color: #b91c1c;">⚠️ <b>注意：</b> 索引不能超出列表範圍，否則會出錯！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide" id="slide-6">
+        <div class="content-card">
+            <div class="badge">CHALLENGE 1</div>
+            <h2>小挑戰：學生信息管理</h2>
+            <p>跟著老師一起完成這個練習：</p>
+            <div class="space-y-4">
+                <div class="feature-item">
+                    <p><b>🎯 任務要求：</b></p>
+                    <ol>
+                        <li>1. 創建一個包含 3 位同學名字的列表</li>
+                        <li>2. 添加第 4 位同學的名字</li>
+                        <li>3. 修改第二位同學的名字</li>
+                        <li>4. 印出列表的長度</li>
+                        <li>5. 印出所有同學的名字</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="code-block mt-4">
+# 步驟 1：創建列表<br>
+students = ["小明", "小美", "阿強"]<br><br>
+# 步驟 2：添加新同學<br>
+students.append("小花")<br><br>
+# 步驟 3：修改名字<br>
+students[1] = "小華"<br><br>
+# 步驟 4：印出長度<br>
+print(f"班級人數：{len(students)}")<br><br>
+# 步驟 5：印出所有名字<br>
+print(students)
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide" id="slide-7">
+        <div class="content-card">
+            <div class="badge" style="background: #f59e0b;">SUMMARY</div>
+            <h2>列表小總結</h2>
+            <div style="background: #fef3c7; padding: 30px; border-radius: 20px;">
+                <h3 style="color: #d97706;">📋 列表知識點</h3>
+                <div class="grid-box">
+                    <div class="feature-item">
+                        <p>✅ <b>創建：</b> `list = [元素1, 元素2, ...]`</p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>訪問：</b> `list[index]`</p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>添加：</b> `list.append(元素)`</p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>修改：</b> `list[index] = 新值`</p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>刪除：</b> `del list[index]`</p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>長度：</b> `len(list)`</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide" id="slide-8">
+        <div class="content-card">
+            <div class="badge">FOR IN</div>
+            <h2>什麼是 for...in 循環？</h2>
+            <p>for...in 循環是專門用來遍歷序列（如列表）的循環方式：</p>
+            <div class="grid-box">
+                <div class="feature-item">
+                    <p>🔄 <b>自動遍歷：</b> 逐一取出列表中的每個元素</p>
+                </div>
+                <div class="feature-item">
+                    <p>📊 <b>簡潔高效：</b> 不需要手動管理計數器</p>
+                </div>
+                <div class="feature-item">
+                    <p>🎯 <b>專為序列：</b> 最適合用於列表、字符串等</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide" id="slide-9">
+        <div class="content-card">
+            <div class="badge">SYNTAX</div>
+            <h2>for...in 循環語法</h2>
+            <p>語法非常簡潔，直接遍歷列表中的每個元素：</p>
+            <div class="code-block">
+# 基本語法<br>
+fruits = ["蘋果", "香蕉", "橙子"]<br><br>
+for fruit in fruits:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(fruit)<br><br>
+# 執行結果：<br>
+# 蘋果<br>
+# 香蕉<br>
+# 橙子
+            </div>
+            <div style="background: #eff6ff; padding: 20px; border-radius: 20px; margin-top: 20px;">
+                <p style="font-weight: bold; color: #1d4ed8;">🎯 <b>重點：</b> `fruit` 是一個臨時變數，每次循環都代表列表中的一個元素！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide" id="slide-10">
+        <div class="content-card">
+            <div class="badge">PRACTICE 2</div>
+            <h2>任務二：計算平均分數</h2>
+            <p>跟著老師一起做，使用 for...in 循環計算平均分：</p>
+            <div class="code-block">
+# 學生分數列表<br>
+scores = [85, 92, 78, 90, 88]<br><br>
+# 初始化總分變數<br>
+total = 0<br><br>
+# 使用 for...in 遍歷列表<br>
+for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;total = total + score<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(f"當前分數：{score}，累計總分：{total}")<br><br>
+# 計算平均分<br>
+average = total / len(scores)<br>
+print(f"平均分：{average}")
+            </div>
+            <div class="feature-item mt-4">
+                <p>💡 <b>小技巧：</b> `total += score` 等同於 `total = total + score`，更簡潔！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11 -->
+    <div class="slide" id="slide-11">
+        <div class="content-card">
+            <div class="badge">CHALLENGE 2</div>
+            <h2>挑戰題：列表與 for...in 綜合運用</h2>
+            <p>融合本堂所學，完成挑戰：</p>
+            <div class="space-y-4">
+                <div class="feature-item">
+                    <p><b>🎯 任務要求：</b></p>
+                    <ol>
+                        <li>1. 創建一個包含 5 個隨機分數的列表</li>
+                        <li>2. 使用 for...in 循環遍歷列表</li>
+                        <li>3. 計算最高分和最低分</li>
+                        <li>4. 找出不及格（<60）的分數</li>
+                        <li>5. 印出所有結果</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="code-block mt-4">
+# 步驟 1：創建分數列表<br>
+scores = [75, 45, 90, 58, 88]<br><br>
+# 步驟 2：初始化變數<br>
+highest = scores[0]<br>
+lowest = scores[0]<br>
+fail_scores = []<br><br>
+# 步驟 3：遍歷列表<br>
+for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score > highest:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highest = score<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score < lowest:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest = score<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score < 60:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fail_scores.append(score)<br><br>
+# 步驟 4：印出結果<br>
+print(f"最高分：{highest}")<br>
+print(f"最低分：{lowest}")<br>
+print(f"不及格分數：{fail_scores}")
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12 -->
+    <div class="slide" id="slide-12">
+        <div class="content-card">
+            <div class="badge" style="background: #ef4444;">DEBUG</div>
+            <h2>常見錯誤與避免方法</h2>
+            <div class="space-y-4">
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>索引超出範圍：</b> 嘗試訪問不存在的索引位置。</p>
+                </div>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>使用等號比較列表：</b> `list1 == list2` 是比較內容，`list1 is list2` 是比較記憶體地址。</p>
+                </div>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>在循環中修改列表：</b> 遍歷列表時刪除元素可能導致跳過某些元素。</p>
+                </div>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>忘記縮排：</b> for 循環內的程式碼必須正確縮排。</p>
+                </div>
+            </div>
+            <div class="feature-item mt-4">
+                <p>✅ <b>避免方法：</b> 使用 `len(list)` 檢查列表長度，遍歷前先複製列表。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13 -->
+    <div class="slide" id="slide-13">
+        <div class="content-card text-center">
+            <div class="badge" style="background: #34c759;">SUCCESS</div>
+            <h2>本堂總結</h2>
+            <p>你已經學會了列表和 for...in 循環！</p>
+            <div style="background: #5856d6; color: white; padding: 40px; border-radius: 30px; margin-top: 30px;">
+                <h3 style="font-size: 28pt !important;">下堂預告：Boolean、Flag 與 Break</h3>
+                <p>學習控制程序的流程，讓代碼更聰明！</p>
+            </div>
+            <p style="margin-top: 30px; font-style: italic; color: #94a3b8;">記住：列表是管理數據的利器，for...in 是遍歷數據的最佳方式！</p>
+        </div>
+    </div>
+</div>
+
+<div class="slide-nav">
+    <a class="nav-btn nav-left" href="https://colab.research.google.com/drive/1D8hxt9wty_8EwJKgVZ-USk3NgKh-wCi2?usp=sharing" target="_blank">COLAB DEMO</a>
+    <button class="nav-btn" onclick="prevSlide()">PREV</button>
+    <button class="nav-btn" onclick="nextSlide()">NEXT</button>
+</div>
+
+</body>
+</html>

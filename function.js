@@ -22,7 +22,7 @@ document.querySelectorAll('.code-block').forEach(block => {
 });
 
 let currentSlide = 1;
-const totalSlides = 10;
+const totalSlides = 13;
 
 function showSlide(n) {
     document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
