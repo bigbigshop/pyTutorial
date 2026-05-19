@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python 學習實驗室 - Boolean 與 Flag 練習</title>
+    <title>Python 學習實驗室 - Boolean、Flag 與 Break 練習</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Noto+Sans+TC:wght@400;700&display=swap');
@@ -114,7 +114,7 @@
         <div class="lg:col-span-2 space-y-6">
             <header>
                 <h1 class="text-3xl font-bold text-white mb-2">挑戰題：成績分析系統</h1>
-                <p class="text-gray-400 text-lg">任務：使用 <code class="text-green-400">Boolean</code> 和 <code class="text-green-400">Flag</code> 分析學生成績！</p>
+                <p class="text-gray-400 text-lg">任務：使用 <code class="text-green-400">Boolean</code>、<code class="text-green-400">Flag</code> 和 <code class="text-green-400">break</code> 分析學生成績！</p>
             </header>
 
             <!-- Boolean 說明 -->
@@ -137,12 +137,26 @@
                 <h2 class="text-sm font-bold text-gray-500 mb-4 uppercase tracking-widest text-xs">Flag（旗標）</h2>
                 <div class="space-y-3 text-sm">
                     <div class="text-gray-300">
-                        <p class="mb-2">🚩 Flag 是一個「監視器」變數，用來記錄是否發生某事：</p>
+                        <p class="mb-2">🚩 Flag = 「監視器」變數，記錄是否發生某事</p>
                         <div class="bg-black/40 p-3 rounded font-mono text-xs">
                             <div><span class="text-purple-400">has_found</span> = <span class="text-red-400">False</span>  <span class="text-gray-500"># 預設：還沒找到</span></div>
-                            <div class="mt-2"><span class="python-keyword">for</span> item <span class="python-keyword">in</span> list:</div>
+                            <div class="mt-2"><span class="python-keyword">if</span> 找到目標:</div>
+                            <div class="pl-4"><span class="text-purple-400">has_found</span> = <span class="text-green-400">True</span>  <span class="text-gray-500"># 豎起旗子</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Break 說明 -->
+            <section class="bg-gray-800/30 p-6 rounded-xl border border-gray-700">
+                <h2 class="text-sm font-bold text-gray-500 mb-4 uppercase tracking-widest text-xs">Break（中斷）</h2>
+                <div class="space-y-3 text-sm">
+                    <div class="text-gray-300">
+                        <p class="mb-2">🛑 break = 「緊急停止鍵」，立即結束循環</p>
+                        <div class="bg-black/40 p-3 rounded font-mono text-xs">
+                            <div><span class="python-keyword">for</span> item <span class="python-keyword">in</span> list:</div>
                             <div class="pl-4"><span class="python-keyword">if</span> item == target:</div>
-                            <div class="pl-8"><span class="text-purple-400">has_found</span> = <span class="text-green-400">True</span>  <span class="text-gray-500"># 找到了！豎起旗子</span></div>
+                            <div class="pl-8"><span class="text-yellow-400">break</span>  <span class="text-gray-500"># 找到就停！</span></div>
                         </div>
                     </div>
                 </div>
@@ -158,10 +172,10 @@
                     <div><span class="python-comment"># 1. 準備學生分數列表</span></div>
                     <div class="empty-line"></div>
 
-                    <div class="mt-4"><span class="python-comment"># 2. 初始化 Flags</span></div>
+                    <div class="mt-4"><span class="python-comment"># 2. 初始化 Flag</span></div>
                     <div class="empty-line"></div>
 
-                    <div class="mt-4"><span class="python-comment"># 3. 遍歷並檢查分數</span></div>
+                    <div class="mt-4"><span class="python-comment"># 3. 用 for + if + break 搜尋</span></div>
                     <div class="empty-line"></div>
 
                     <div class="mt-4"><span class="python-comment"># 4. 根據 Flag 輸出結果</span></div>
@@ -182,8 +196,8 @@
                         <span>條件判斷</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <code class="bg-black px-1 rounded text-blue-300">and / or / not</code>
-                        <span>邏輯運算</span>
+                        <code class="bg-black px-1 rounded text-yellow-300">break</code>
+                        <span>停止循環</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <code class="bg-black px-1 rounded text-blue-300">== / != / > / <</code>
@@ -195,7 +209,7 @@
 
         <!-- 右側：MacBook Terminal 互動區 -->
         <div class="lg:col-span-3 lg:sticky lg:top-8">
-            <div class="mac-window flex flex-col h-[600px]">
+            <div class="mac-window flex flex-col h-[650px]">
                 <!-- macOS Header -->
                 <div class="mac-header">
                     <div class="traffic-lights">
@@ -203,7 +217,7 @@
                         <div class="light yellow"></div>
                         <div class="light green"></div>
                     </div>
-                    <div class="header-title">admin — grade_analyzer.py — zsh</div>
+                    <div class="header-title">admin — grade_search.py — zsh</div>
                 </div>
 
                 <!-- Terminal Body -->
@@ -211,11 +225,23 @@
                     <div class="text-sm text-gray-500 mb-8 font-sans">Last login: <span id="current-time"></span> on ttys001</div>
 
                     <div id="interaction-flow" class="space-y-4">
+                        <!-- 模式選擇 -->
+                        <div id="row-mode" class="flex flex-col gap-3">
+                            <div class="text-yellow-400 mb-2">
+                                <span class="prompt-symbol">%</span> 選擇搜尋模式：
+                            </div>
+                            <div class="flex gap-2 flex-wrap">
+                                <button onclick="startSearch('fail')" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white transition">🔍 找不及格</button>
+                                <button onclick="startSearch('perfect')" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded text-white transition">⭐ 找滿分</button>
+                                <button onclick="startSearch('even')" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white transition">🔢 找偶數</button>
+                            </div>
+                        </div>
+
                         <!-- 輸入學生分數 -->
-                        <div id="row-input" class="flex flex-col">
+                        <div id="row-input" class="hidden flex flex-col">
                             <div class="flex items-center mb-2">
                                 <span class="prompt-symbol">%</span>
-                                <span class="whitespace-nowrap mr-2">請輸入 5 位同學的分數（用空格分隔）:</span>
+                                <span class="whitespace-nowrap mr-2" id="input-label">請輸入 5 位同學的分數（用空格分隔）:</span>
                             </div>
                             <div class="flex items-center">
                                 <span class="prompt-symbol">%</span>
@@ -249,6 +275,11 @@
         const inScores = document.getElementById('in-scores');
         const rowRes = document.getElementById('row-res');
         const statusText = document.getElementById('status-text');
+        const rowInput = document.getElementById('row-input');
+        const rowMode = document.getElementById('row-mode');
+        const inputLabel = document.getElementById('input-label');
+
+        let currentMode = '';
 
         document.getElementById('current-time').innerText = new Date().toLocaleString('zh-TW', {
             weekday: 'short',
@@ -259,6 +290,23 @@
             second: '2-digit',
             hour12: false
         });
+
+        function startSearch(mode) {
+            currentMode = mode;
+            rowMode.classList.add('hidden');
+            rowInput.classList.remove('hidden');
+
+            if (mode === 'fail') {
+                inputLabel.textContent = '請輸入 5 位同學的分數，找第一個不及格：';
+            } else if (mode === 'perfect') {
+                inputLabel.textContent = '請輸入 5 位同學的分數，找第一個滿分：';
+            } else if (mode === 'even') {
+                inputLabel.textContent = '請輸入 5 個數字，找第一個偶數：';
+            }
+
+            inScores.focus();
+            statusText.innerText = "STATUS: WAITING_INPUT";
+        }
 
         inScores.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && inScores.value) {
@@ -271,12 +319,12 @@
 
             const parts = input.trim().split(/\s+/);
             if (parts.length !== 5) {
-                statusText.innerText = "STATUS: ERROR - 請輸入恰好5個分數！";
+                statusText.innerText = "STATUS: ERROR - 請輸入恰好5個數字！";
                 return;
             }
 
-            const scores = parts.map(p => parseFloat(p));
-            if (scores.some(s => isNaN(s))) {
+            const numbers = parts.map(p => parseFloat(p));
+            if (numbers.some(s => isNaN(s))) {
                 statusText.innerText = "STATUS: ERROR - 請輸入有效的數字！";
                 return;
             }
@@ -284,50 +332,68 @@
             inScores.disabled = true;
 
             setTimeout(() => {
-                let hasFailed = false;
-                let hasPerfect = false;
-                let allPassed = true;
-
                 rowRes.classList.remove('hidden');
+                rowRes.innerHTML = '';
 
                 const resTitle = document.createElement('div');
                 resTitle.className = 'text-yellow-400 mb-4';
-                resTitle.innerHTML = `<span class="prompt-symbol">%</span> 分析結果：`;
+                resTitle.innerHTML = `<span class="prompt-symbol">%</span> 搜尋模式：${getModeName(currentMode)}`;
                 rowRes.appendChild(resTitle);
 
-                for (const score of scores) {
-                    if (score < 60) hasFailed = true;
-                    if (score === 100) hasPerfect = true;
+                const resList = document.createElement('div');
+                resList.className = 'text-white mb-4';
+                resList.innerHTML = `<span class="prompt-symbol">%</span> 列表：${numbers.join(', ')}`;
+                rowRes.appendChild(resList);
+
+                let found = false;
+                let foundIndex = -1;
+                let foundValue = -1;
+
+                for (let i = 0; i < numbers.length; i++) {
+                    const num = numbers[i];
+                    let condition = false;
+                    let conditionText = '';
+
+                    if (currentMode === 'fail') {
+                        condition = num < 60;
+                        conditionText = `${num} < 60`;
+                    } else if (currentMode === 'perfect') {
+                        condition = num === 100;
+                        conditionText = `${num} === 100`;
+                    } else if (currentMode === 'even') {
+                        condition = num % 2 === 0;
+                        conditionText = `${num} % 2 === 0`;
+                    }
+
+                    const checkLine = document.createElement('div');
+                    checkLine.className = 'text-gray-400 text-sm';
+                    checkLine.innerHTML = `<span class="prompt-symbol">%</span> 檢查 [${i}]: ${num} → ${conditionText}`;
+                    rowRes.appendChild(checkLine);
+
+                    if (condition) {
+                        found = true;
+                        foundIndex = i;
+                        foundValue = num;
+
+                        const foundLine = document.createElement('div');
+                        foundLine.className = 'text-green-400 font-bold mt-2';
+                        foundLine.innerHTML = `<span class="prompt-symbol">%</span> ✅ 找到！位置 ${i + 1}，值：${num}`;
+                        rowRes.appendChild(foundLine);
+
+                        const breakLine = document.createElement('div');
+                        breakLine.className = 'text-yellow-400 text-sm';
+                        breakLine.innerHTML = `<span class="prompt-symbol">%</span> 🔴 break！停止搜尋！`;
+                        rowRes.appendChild(breakLine);
+                        break;
+                    }
                 }
 
-                for (const score of scores) {
-                    if (score < 60) allPassed = false;
+                if (!found) {
+                    const notFoundLine = document.createElement('div');
+                    notFoundLine.className = 'text-gray-400 mt-4';
+                    notFoundLine.innerHTML = `<span class="prompt-symbol">%</span> ❌ 沒有找到符合條件的數值`;
+                    rowRes.appendChild(notFoundLine);
                 }
-
-                const res1 = document.createElement('div');
-                res1.className = 'text-white';
-                res1.innerHTML = `<span class="prompt-symbol">%</span> 分數列表：${scores.join(', ')}`;
-                rowRes.appendChild(res1);
-
-                const res2 = document.createElement('div');
-                res2.className = 'text-white mt-2';
-                res2.innerHTML = `<span class="prompt-symbol">%</span> 是否有人不及格 (< 60)：<span class="${hasFailed ? 'text-red-400' : 'text-green-400'}">${hasFailed}</span>`;
-                rowRes.appendChild(res2);
-
-                const res3 = document.createElement('div');
-                res3.className = 'text-white';
-                res3.innerHTML = `<span class="prompt-symbol">%</span> 是否有人獲得滿分 (= 100)：<span class="${hasPerfect ? 'text-yellow-400' : 'text-green-400'}">${hasPerfect}</span>`;
-                rowRes.appendChild(res3);
-
-                const res4 = document.createElement('div');
-                res4.className = 'text-white';
-                res4.innerHTML = `<span class="prompt-symbol">%</span> 是否全部及格：<span class="${allPassed ? 'text-green-400' : 'text-red-400'}">${allPassed}</span>`;
-                rowRes.appendChild(res4);
-
-                const res5 = document.createElement('div');
-                res5.className = 'text-gray-400 mt-4';
-                res5.textContent = '分析完成！';
-                rowRes.appendChild(res5);
 
                 const cursorDiv = document.createElement('div');
                 cursorDiv.className = 'mt-4 flex items-center';
@@ -344,13 +410,23 @@
             }, 500);
         }
 
+        function getModeName(mode) {
+            if (mode === 'fail') return '找不及格 (< 60)';
+            if (mode === 'perfect') return '找滿分 (= 100)';
+            if (mode === 'even') return '找偶數 (% 2 === 0)';
+            return mode;
+        }
+
         function resetTerminal() {
             inScores.value = '';
             inScores.disabled = false;
             rowRes.innerHTML = '';
             rowRes.classList.add('hidden');
+            rowInput.classList.add('hidden');
+            rowMode.classList.remove('hidden');
             inScores.focus();
             statusText.innerText = "STATUS: READY";
+            currentMode = '';
             document.getElementById('current-time').innerText = new Date().toLocaleString('zh-TW', { hour12: false });
         }
     </script>

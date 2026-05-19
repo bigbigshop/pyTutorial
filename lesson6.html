@@ -139,27 +139,27 @@ else:<br>
     <!-- Slide 7 -->
     <div class="slide" id="slide-7">
         <div class="content-card">
-            <div class="badge">PRACTICE 2</div>
-            <h2>任務二：跟老師做</h2>
-            <p>使用 Flag 找出列表中是否有重複的數字：</p>
-            <div class="code-block">
-# 數字列表<br>
-numbers = [5, 8, 3, 9, 2, 5, 7]<br><br>
-# 初始化 Flag<br>
-has_duplicate = False<br><br>
-# 檢查是否有重複<br>
-for i in range(len(numbers)):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;for j in range(i + 1, len(numbers)):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if numbers[i] == numbers[j]:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_duplicate = True<br><br>
-# 輸出結果<br>
-if has_duplicate:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print(f"發現重複數字！")<br>
-else:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print(f"沒有重複數字")
+            <div class="badge">BREAK</div>
+            <h2>什麼是 break？</h2>
+            <p>break 是「立即停止循環」的指令：</p>
+            <div class="grid-box">
+                <div class="feature-item">
+                    <p>🛑 <b>立即退出：</b> 遇到 break 就馬上停止整個循環</p>
+                </div>
+                <div class="feature-item">
+                    <p>⏭️ <b>節省時間：</b> 找到答案後不用繼續遍歷</p>
+                </div>
+                <div class="feature-item">
+                    <p>🔗 <b>常用組合：</b> `while True + break` 是經典模式</p>
+                </div>
             </div>
-            <div class="feature-item mt-4">
-                <p>💡 <b>為什麼用 Flag？</b> 可以提前結束搜索，找到答案後就不用繼續檢查了！</p>
+            <div class="code-block mt-4">
+# 找到第一個不及格的學生就停止<br>
+scores = [85, 45, 92, 78, 60]<br><br>
+for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score < 60:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"找到不及格！分數：{score}")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break  # 立即停止循環
             </div>
         </div>
     </div>
@@ -167,8 +167,84 @@ else:<br>
     <!-- Slide 8 -->
     <div class="slide" id="slide-8">
         <div class="content-card">
+            <div class="badge">FLAG + BREAK</div>
+            <h2>Flag 與 break 的完美結合</h2>
+            <p>用 Flag 記錄「是否找到」，用 break 提早結束：</p>
+            <div class="code-block">
+# 在列表中搜尋 100 分的學生<br>
+scores = [85, 72, 100, 90, 60]<br>
+found = False<br>
+position = 0  # 記錄位置<br><br>
+for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;position = position + 1  # 位置從 1 開始<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(f"檢查第 {position} 位同學，分數：{score}")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score == 100:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found = True<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"找到滿分學生！在位置 {position}！")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>
+if not found:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("沒有找到滿分學生")
+            </div>
+            <div class="feature-item mt-4">
+                <p>💡 <b>解釋：</b> `position = position + 1` 每次循環位置加 1，就像數數「1、2、3...」</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide" id="slide-9">
+        <div class="content-card">
+            <div class="badge">WHILE TRUE</div>
+            <h2>經典模式：while True + break</h2>
+            <p>這種組合讓程序等待用戶輸入，直到滿足條件才退出：</p>
+            <div class="code-block">
+# 密碼驗證程序<br>
+password = "python123"<br><br>
+while True:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;guess = input("請輸入密碼：")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if guess == password:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("登入成功！")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break  # 密碼正確，退出循環<br>
+&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("密碼錯誤，請重試！")
+            </div>
+            <div style="background: #eff6ff; padding: 20px; border-radius: 20px; margin-top: 20px;">
+                <p style="font-weight: bold; color: #1d4ed8;">🎯 <b>重點：</b> `while True` 創造一個無限循環，內部的 `break` 是唯一退出方式！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide" id="slide-10">
+        <div class="content-card">
+            <div class="badge">PRACTICE 2</div>
+            <h2>任務二：跟老師做</h2>
+            <p>使用 Flag + break 在列表中找特定數字：</p>
+            <div class="code-block">
+# 在數字列表中找第一個偶數<br>
+numbers = [7, 3, 8, 5, 2, 9]<br><br>
+found_even = False<br><br>
+for num in numbers:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(f"檢查數字：{num}")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if num % 2 == 0:  # % 是取餘數<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"找到偶數：{num}！")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_even = True<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>
+if not found_even:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("沒有找到偶數")
+            </div>
+            <div class="feature-item mt-4">
+                <p>💡 <b>小技巧：</b> `num % 2 == 0` 表示「num 能被 2 整除」，即偶數！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11 -->
+    <div class="slide" id="slide-11">
+        <div class="content-card">
             <div class="badge" style="background: #f59e0b;">SUMMARY</div>
-            <h2>Boolean 與 Flag 小總結</h2>
+            <h2>Boolean、Flag 與 Break 小總結</h2>
             <div style="background: #fef3c7; padding: 30px; border-radius: 20px;">
                 <h3 style="color: #d97706;">📋 Boolean 知識點</h3>
                 <div class="grid-box">
@@ -184,24 +260,24 @@ else:<br>
                 </div>
             </div>
             <div style="background: #eff6ff; padding: 30px; border-radius: 20px; margin-top: 20px;">
-                <h3 style="color: #1d4ed8;">📋 Flag 知識點</h3>
+                <h3 style="color: #1d4ed8;">📋 Flag + Break 知識點</h3>
                 <div class="grid-box">
                     <div class="feature-item">
-                        <p>✅ <b>用途：</b> 記錄「是否發生某事」</p>
+                        <p>✅ <b>Flag：</b> 記錄「是否發生某事」</p>
                     </div>
                     <div class="feature-item">
-                        <p>✅ <b>初始值：</b> 通常是 <code>False</code></p>
+                        <p>✅ <b>Break：</b> 立即停止循環</p>
                     </div>
                     <div class="feature-item">
-                        <p>✅ <b>設定：</b> 當條件滿足時變成 <code>True</code></p>
+                        <p>✅ <b>結合：</b> Flag + Break = 智能搜索</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Slide 9 -->
-    <div class="slide" id="slide-9">
+    <!-- Slide 12 -->
+    <div class="slide" id="slide-12">
         <div class="content-card">
             <div class="badge" style="background: #ef4444;">DEBUG</div>
             <h2>常見錯誤與避免方法</h2>
@@ -213,20 +289,20 @@ else:<br>
                     <p>❌ <b>Flag 忘記初始化：</b> 使用前必須先給 Flag 一個初始值。</p>
                 </div>
                 <div class="feature-item" style="border-left: 10px solid #ef4444;">
-                    <p>❌ <b>在循環中忘記更新 Flag：</b> 導致 Flag 永遠是初始值。</p>
+                    <p>❌ <b>break 放在錯誤位置：</b> break 只會停止最內層的循環。</p>
                 </div>
                 <div class="feature-item" style="border-left: 10px solid #ef4444;">
-                    <p>❌ <b>使用 `=` 比較 Boolean：</b> 應該直接用 `is_found == True` 或更好的是 `if is_found:`。</p>
+                    <p>❌ <b>無限循環：</b> `while True` 沒有 break 會永遠執行。</p>
                 </div>
             </div>
             <div class="feature-item mt-4">
-                <p>✅ <b>建議：</b> Flag 命名要有意義，如 `is_found`、`has_error`、`is_valid`。✅ <b>簡化：</b> `if is_found == True:` 可以簡化成 `if is_found:`。</p>
+                <p>✅ <b>建議：</b> Flag 命名要有意義，如 `is_found`、`has_error`。使用 `if is_found:` 而非 `if is_found == True:`。</p>
             </div>
         </div>
     </div>
 
-    <!-- Slide 10 -->
-    <div class="slide" id="slide-10">
+    <!-- Slide 13 -->
+    <div class="slide" id="slide-13">
         <div class="content-card">
             <div class="badge">CHALLENGE</div>
             <h2>挑戰題：成績管理系統</h2>
@@ -236,18 +312,18 @@ else:<br>
                     <p><b>🎯 任務要求：</b></p>
                     <ol>
                         <li>1. 創建一個包含 5 位同學分數的列表</li>
-                        <li>2. 使用 Flag 找出是否有同學不及格（<60）</li>
-                        <li>3. 使用 Flag 找出是否有同學獲得滿分（100）</li>
-                        <li>4. 使用 Flag 統計是否所有同學都及格</li>
-                        <li>5. 印出所有統計結果</li>
+                        <li>2. 使用 Flag + break 找出第一個不及格的學生</li>
+                        <li>3. 使用 Flag + break 找出第一個滿分的學生</li>
+                        <li>4. 如果全部及格，印出「全班都及格！」</li>
+                        <li>5. 印出找到的學生位置和分數</li>
                     </ol>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Slide 11 -->
-    <div class="slide" id="slide-11">
+    <!-- Slide 14 -->
+    <div class="slide" id="slide-14">
         <div class="content-card">
             <div class="badge">SOLUTION</div>
             <h2>挑戰題解答</h2>
@@ -256,38 +332,42 @@ else:<br>
 # 步驟 1：學生分數列表<br>
 scores = [85, 45, 100, 72, 58]<br><br>
 # 步驟 2：初始化 Flags<br>
-has_failed = False<br>
-has_perfect = False<br>
-all_passed = True<br><br>
-# 步驟 3：遍歷並檢查<br>
+found_fail = False<br>
+found_perfect = False<br>
+position = 0  # 位置計數器<br><br>
+# 步驟 3：找不及格<br>
 for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;position = position + 1<br>
 &nbsp;&nbsp;&nbsp;&nbsp;if score < 60:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_failed = True<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"第 {position} 位同學不及格，分數：{score}")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_fail = True<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>
+# 步驟 4：找滿分（要重置位置）<br>
+position = 0  # 重置計數器<br>
+for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;position = position + 1<br>
 &nbsp;&nbsp;&nbsp;&nbsp;if score == 100:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_perfect = True<br><br>
-# 步驟 4：檢查是否全部及格<br>
-for score in scores:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;if score < 60:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_passed = False<br><br>
-# 步驟 5：輸出結果<br>
-print(f"有人不及格：{has_failed}")<br>
-print(f"有人獲得满分：{has_perfect}")<br>
-print(f"全部及格：{all_passed}")
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"第 {position} 位同學獲得滿分！")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_perfect = True<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>
+# 步驟 5：檢查全部<br>
+if not found_fail:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("全班都及格！")
             </div>
         </div>
     </div>
 
-    <!-- Slide 12 -->
-    <div class="slide" id="slide-12">
+    <!-- Slide 15 -->
+    <div class="slide" id="slide-15">
         <div class="content-card text-center">
             <div class="badge" style="background: #34c759;">SUCCESS</div>
             <h2>本堂總結</h2>
-            <p>你已經學會了 Boolean 和 Flag 的使用！</p>
+            <p>你已經學會了 Boolean、Flag 和 Break 的使用！</p>
             <div style="background: #5856d6; color: white; padding: 40px; border-radius: 30px; margin-top: 30px;">
                 <h3 style="font-size: 28pt !important;">下堂預告：import 模組</h3>
-                <p>學習如何在程式中引入其他模組，以擴充程式的功能！</p>
+                <p>學習如何在程式中引入其他模組，擴充程式功能！</p>
             </div>
-            <p style="margin-top: 30px; font-style: italic; color: #94a3b8;">記住：Boolean 是程式的開關，Flag 是程式的監視器！</p>
+            <p style="margin-top: 30px; font-style: italic; color: #94a3b8;">記住：Boolean 是開關，Flag 是監視器，Break 是緊急停止鍵！</p>
         </div>
     </div>
 </div>
