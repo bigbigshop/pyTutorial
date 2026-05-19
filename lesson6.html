@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 程式編程：Boolean 與 Flag (完整版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="function.js" defer></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="slide-container" id="container">
+    <!-- Slide 1 -->
+    <div class="slide active" id="slide-1">
+        <div class="content-card text-center">
+            <h1>Python Boolean 與 Flag：<br>程式的開關</h1>
+            <p style="color: #34c759; font-weight: bold;">第六堂：Boolean、Flag 與流程控制</p>
+            <div class="mt-10 pt-6 border-t border-gray-200">
+                <p>中三級電腦科 | 學習控制程序的走向</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" id="slide-2">
+        <div class="content-card">
+            <div class="badge">BOOLEAN</div>
+            <h2>什麼是 Boolean？</h2>
+            <p>Boolean（布爾值）是一種只有兩種可能的數據類型：</p>
+            <div class="grid-box">
+                <div class="feature-item">
+                    <p>✅ <b>True（真）：</b> 條件成立，表示「是」</p>
+                </div>
+                <div class="feature-item">
+                    <p>❌ <b>False（假）：</b> 條件不成立，表示「否」</p>
+                </div>
+            </div>
+            <div style="background: #eff6ff; padding: 20px; border-radius: 20px; margin-top: 20px;">
+                <p style="font-weight: bold; color: #1d4ed8;">🎯 <b>重點：</b> Boolean 只有兩個值：<code>True</code> 和 <code>False</code>，就像開關的「開」和「關」！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" id="slide-3">
+        <div class="content-card">
+            <div class="badge">SYNTAX</div>
+            <h2>Boolean 的語法</h2>
+            <p>使用比較運算符來產生 Boolean 值：</p>
+            <div class="code-block">
+# 比較運算符<br>
+print(5 > 3)    # True<br>
+print(10 == 10) # True<br>
+print(7 < 2)    # False<br>
+print(8 != 8)   # False<br><br>
+# 變數也可以存放 Boolean<br>
+is_student = True<br>
+is_passed = score >= 60
+            </div>
+            <div style="background: #fef2f2; padding: 20px; border-radius: 20px; border: 1px solid #fecaca; margin-top: 20px;">
+                <p style="color: #b91c1c;">⚠️ <b>注意：</b> `=` 是賦值，`==` 是比較是否相等！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide" id="slide-4">
+        <div class="content-card">
+            <div class="badge">PRACTICE 1</div>
+            <h2>任務一：跟老師做</h2>
+            <p>練習使用 Boolean 判斷考試是否通過：</p>
+            <div class="code-block">
+# 學生的分數<br>
+score = 75<br><br>
+# 判斷是否及格<br>
+is_passed = score >= 60<br>
+print(f"分數：{score}")<br>
+print(f"是否及格：{is_passed}")<br><br>
+# 多個條件判斷<br>
+is_excellent = score >= 90<br>
+is_good = score >= 80 and score < 90<br>
+print(f"是否優秀：{is_excellent}")<br>
+print(f"是否良好：{is_good}")
+            </div>
+            <div class="feature-item mt-4">
+                <p>💡 <b>小技巧：</b> `and` 表示「且」，`or` 表示「或」，`not` 表示「非」！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide" id="slide-5">
+        <div class="content-card">
+            <div class="badge">FLAG</div>
+            <h2>什麼是 Flag（旗標）？</h2>
+            <p>Flag 是一個用來記錄「是否發生某事」的變數：</p>
+            <div class="grid-box">
+                <div class="feature-item">
+                    <p>🚩 <b>像旗子一樣：</b> 預設是「倒下」的狀態（False）</p>
+                </div>
+                <div class="feature-item">
+                    <p>🎯 <b>一旦條件達成：</b> 旗子就「豎起」（變成 True）</p>
+                </div>
+                <div class="feature-item">
+                    <p>🔍 <b>用於檢查：</b> 程式後面可以查看 Flag 來決定下一步</p>
+                </div>
+            </div>
+            <div style="background: #fef3c7; padding: 20px; border-radius: 20px; margin-top: 20px;">
+                <p style="color: #d97706;">💡 <b>生活例子：</b> 就像學校的「遲到登記簿」—— 一開始是空的（False），有人遲到就打勾（True）。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide" id="slide-6">
+        <div class="content-card">
+            <div class="badge">APPLICATION</div>
+            <h2>Flag 的實際應用</h2>
+            <p>用 Flag 來檢查列表中是否有不及格的學生：</p>
+            <div class="code-block">
+# 學生分數列表<br>
+scores = [85, 92, 45, 78, 60, 55]<br><br>
+# 初始化 Flag（預設為 False，表示「沒有不及格」）<br>
+has_failed = False<br><br>
+# 遍歷所有分數<br>
+for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score < 60:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_failed = True  # 找到不及格，豎起旗子<br><br>
+# 最後檢查 Flag<br>
+if has_failed:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("有同學不及格！需要補考！")<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("全部同學都及格！")
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide" id="slide-7">
+        <div class="content-card">
+            <div class="badge">PRACTICE 2</div>
+            <h2>任務二：跟老師做</h2>
+            <p>使用 Flag 找出列表中是否有重複的數字：</p>
+            <div class="code-block">
+# 數字列表<br>
+numbers = [5, 8, 3, 9, 2, 5, 7]<br><br>
+# 初始化 Flag<br>
+has_duplicate = False<br><br>
+# 檢查是否有重複<br>
+for i in range(len(numbers)):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for j in range(i + 1, len(numbers)):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if numbers[i] == numbers[j]:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_duplicate = True<br><br>
+# 輸出結果<br>
+if has_duplicate:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(f"發現重複數字！")<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(f"沒有重複數字")
+            </div>
+            <div class="feature-item mt-4">
+                <p>💡 <b>為什麼用 Flag？</b> 可以提前結束搜索，找到答案後就不用繼續檢查了！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide" id="slide-8">
+        <div class="content-card">
+            <div class="badge" style="background: #f59e0b;">SUMMARY</div>
+            <h2>Boolean 與 Flag 小總結</h2>
+            <div style="background: #fef3c7; padding: 30px; border-radius: 20px;">
+                <h3 style="color: #d97706;">📋 Boolean 知識點</h3>
+                <div class="grid-box">
+                    <div class="feature-item">
+                        <p>✅ <b>值：</b> <code>True</code> 或 <code>False</code></p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>比較：</b> `==`, `!=`, `>`, `<`, `>=`, `<=`</p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>邏輯：</b> `and`, `or`, `not`</p>
+                    </div>
+                </div>
+            </div>
+            <div style="background: #eff6ff; padding: 30px; border-radius: 20px; margin-top: 20px;">
+                <h3 style="color: #1d4ed8;">📋 Flag 知識點</h3>
+                <div class="grid-box">
+                    <div class="feature-item">
+                        <p>✅ <b>用途：</b> 記錄「是否發生某事」</p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>初始值：</b> 通常是 <code>False</code></p>
+                    </div>
+                    <div class="feature-item">
+                        <p>✅ <b>設定：</b> 當條件滿足時變成 <code>True</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide" id="slide-9">
+        <div class="content-card">
+            <div class="badge" style="background: #ef4444;">DEBUG</div>
+            <h2>常見錯誤與避免方法</h2>
+            <div class="space-y-4">
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>混淆 `=` 和 `==`：</b> `=` 是賦值，`==` 是比較。</p>
+                </div>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>Flag 忘記初始化：</b> 使用前必須先給 Flag 一個初始值。</p>
+                </div>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>在循環中忘記更新 Flag：</b> 導致 Flag 永遠是初始值。</p>
+                </div>
+                <div class="feature-item" style="border-left: 10px solid #ef4444;">
+                    <p>❌ <b>使用 `=` 比較 Boolean：</b> 應該直接用 `is_found == True` 或更好的是 `if is_found:`。</p>
+                </div>
+            </div>
+            <div class="feature-item mt-4">
+                <p>✅ <b>建議：</b> Flag 命名要有意義，如 `is_found`、`has_error`、`is_valid`。✅ <b>簡化：</b> `if is_found == True:` 可以簡化成 `if is_found:`。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide" id="slide-10">
+        <div class="content-card">
+            <div class="badge">CHALLENGE</div>
+            <h2>挑戰題：成績管理系統</h2>
+            <p>融合本堂所學，完成綜合挑戰：</p>
+            <div class="space-y-4">
+                <div class="feature-item">
+                    <p><b>🎯 任務要求：</b></p>
+                    <ol>
+                        <li>1. 創建一個包含 5 位同學分數的列表</li>
+                        <li>2. 使用 Flag 找出是否有同學不及格（<60）</li>
+                        <li>3. 使用 Flag 找出是否有同學獲得滿分（100）</li>
+                        <li>4. 使用 Flag 統計是否所有同學都及格</li>
+                        <li>5. 印出所有統計結果</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11 -->
+    <div class="slide" id="slide-11">
+        <div class="content-card">
+            <div class="badge">SOLUTION</div>
+            <h2>挑戰題解答</h2>
+            <p>跟著老師一步步完成：</p>
+            <div class="code-block">
+# 步驟 1：學生分數列表<br>
+scores = [85, 45, 100, 72, 58]<br><br>
+# 步驟 2：初始化 Flags<br>
+has_failed = False<br>
+has_perfect = False<br>
+all_passed = True<br><br>
+# 步驟 3：遍歷並檢查<br>
+for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score < 60:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_failed = True<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score == 100:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_perfect = True<br><br>
+# 步驟 4：檢查是否全部及格<br>
+for score in scores:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if score < 60:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_passed = False<br><br>
+# 步驟 5：輸出結果<br>
+print(f"有人不及格：{has_failed}")<br>
+print(f"有人獲得满分：{has_perfect}")<br>
+print(f"全部及格：{all_passed}")
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12 -->
+    <div class="slide" id="slide-12">
+        <div class="content-card text-center">
+            <div class="badge" style="background: #34c759;">SUCCESS</div>
+            <h2>本堂總結</h2>
+            <p>你已經學會了 Boolean 和 Flag 的使用！</p>
+            <div style="background: #5856d6; color: white; padding: 40px; border-radius: 30px; margin-top: 30px;">
+                <h3 style="font-size: 28pt !important;">下堂預告：import 模組</h3>
+                <p>學習如何在程式中引入其他模組，以擴充程式的功能！</p>
+            </div>
+            <p style="margin-top: 30px; font-style: italic; color: #94a3b8;">記住：Boolean 是程式的開關，Flag 是程式的監視器！</p>
+        </div>
+    </div>
+</div>
+
+<div class="slide-nav">
+    <a class="nav-btn nav-left" href="https://colab.research.google.com/drive/1D8hxt9wty_8EwJKgVZ-USk3NgKh-wCi2?usp=sharing" target="_blank">COLAB DEMO</a>
+    <button class="nav-btn" onclick="prevSlide()">PREV</button>
+    <button class="nav-btn" onclick="nextSlide()">NEXT</button>
+</div>
+
+</body>
+</html>
